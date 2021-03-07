@@ -7,7 +7,6 @@ import requests
 class AvitoParser:
     def __init__(self):
         self.url = 'https://www.avito.ru'
-        self.session = requests.Session()
 
     def _get_page(self, city: str, category: str = 'avtomobili', model: str = None, radius: int = 0, page: int = None):
         """
@@ -29,7 +28,7 @@ class AvitoParser:
             params.pop('cd')
 
         try:
-            r = self.session.get(url, params=params)
+            r = requests.get(url, params=params)
             r.raise_for_status()
             return r.text
         except (requests.RequestException, ValueError):
@@ -45,9 +44,8 @@ class AvitoParser:
             print(item_url)
 
 
-
-
 if __name__ == '__main__':
     parser = AvitoParser()
     parser._get_new_links(city="tomsk")
+
 
