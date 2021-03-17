@@ -31,46 +31,49 @@ class Advert:
 
 
 class AvitoParser:
+    category = 'avtomobili'
+    params = {
+        'cd': 1,  # непонятно что это, но есть только если не выбрана марка авто
+        'radius': 0,  # Радиус поиска вокруг города в км
+        's': 104,  # Сортировка (104 по дате, 1 дешевле, 2 дороже)
+    }
+
     def __init__(self):
         self._url = 'https://www.avito.ru'
         self.new_urls = []
         self.adverts = defaultdict(Advert)
 
-    def _get_page(self, city: str, category: str = 'avtomobili', model: str = None, radius: int = 0, page: int = None):
+    def _get_page(self, city: str, model: str = None, radius: int = 0, page: int = None):
         """
         Возвращает html списка объявлений отсортированных по дате
         Все параметры необходимо передавать в нижнем регистре
         """
-        url = f'{self._url}/{city}/{category}'
-        params = {
-            'cd': 1,            # непонятно что это, но есть только если не выбрана марка авто
-            'radius': radius,   # Радиус поиска вокруг города в км
-            's': 104,           # Сортировка (104 по дате, 1 дешевле, 2 дороже)
-        }
+        url = f'{self._url}/{city}/{self.category}'
+        self.params['radius'] = radius
 
         if page and page > 1:
-            params['p'] = page
+            self.params['p'] = page
 
         if model:
             url = f'{url}/{model}'
-            params.pop('cd')    # когда добавляется модель из url пропадает параметр сd
+            self.params.pop('cd')    # когда добавляется модель из url пропадает параметр сd
 
         try:
-            r = requests.get(url, params=params)
+            r = requests.get(url, params=self.params)
             r.raise_for_status()
             r.encoding = 'utf-8'
             return r.text
         except (requests.RequestException, ValueError):
-            return False
+            return None
 
-    def _get_new_links(self, city: str):
+    def _get_new_links(self, city: str) -> list or None:
         """
         заполняет список links ссылками на новые объявления c первой страницы поиска по city
         """
         text = self._get_page(city=city)
 
         if not text:
-            return False
+            return None
 
         soup = bs4.BeautifulSoup(text, 'lxml')
         titles = soup.find_all('div', class_='iva-item-titleStep-2bjuh')
@@ -80,9 +83,9 @@ class AvitoParser:
             url = item.find('a').get('href')
             self.new_urls.append(url)
 
-        return True
+        return self.new_urls
 
-    def _parse_advert_page(self, url: str):
+    def _parse_advert_page(self, url: str) -> defaultdict or None:
         """
         Парсит страницу объявления. Создаёт объект объявления, записывает в него все найденные параметры
         и добавляет в словарь self.adverts
@@ -92,7 +95,7 @@ class AvitoParser:
             r.raise_for_status()
             r.encoding = 'utf-8'
         except (requests.RequestException, ValueError):
-            return False
+            return None
 
         soup = bs4.BeautifulSoup(r.text, 'lxml')
         title = soup.find('span', class_='title-info-title-text').text.strip()
@@ -108,7 +111,7 @@ class AvitoParser:
         advert.set_params(params)
 
         self.adverts[url] = advert
-        return True
+        return self.adverts
 
     def run(self, city: str):
         """
@@ -117,12 +120,12 @@ class AvitoParser:
         Добавляет в словарь с объявлениями где ключ url а значение объект Advert
         """
         if not self._get_new_links(city=city):
-            raise Exception("Нет новых объявлений")
+            raise ValueError("Нет новых объявлений")
         for link in self.new_urls:
             url = f'{self._url}{link}'
             print(url)
             self._parse_advert_page(url)
-            break
+            break   # пока обрабатываем одну ссылку
         for advert_url, advert_param in self.adverts.items():
             print('url', advert_url)
             print('param:', advert_param.params)
@@ -130,6 +133,6 @@ class AvitoParser:
 
 if __name__ == '__main__':
     parser = AvitoParser()
-    parser.run(city="tomsk")
+    parser.run(city="rossiya")
 
 
