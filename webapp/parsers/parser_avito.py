@@ -1,4 +1,6 @@
 from collections import defaultdict
+from datetime import datetime, timedelta
+import logging
 
 import bs4
 import requests
@@ -21,13 +23,28 @@ class Advert:
         self.price = price
         self.currency = currency
 
-    def set_publication_date(self, publication_date: str):
-        self.publication_date = publication_date    # надо добавить переработку в datetime
+    def set_publication_date(self, publication_date: str) -> datetime:
+        now_date = datetime.utcnow()
+        publication_time = datetime.strptime(publication_date.split('в')[-1].strip(), '%H:%M')
+
+        if 'вчера' in publication_date:
+            now_date -= timedelta(days=1)
+
+        day, month, year = now_date.day, now_date.month, now_date.year
+        hour, minute = publication_time.hour, publication_time.minute
+
+        publication_date = datetime(year, month, day, hour, minute)
+
+        self.publication_date = publication_date
+        return self.publication_date
 
     def set_params(self, params: bs4.ResultSet):
         for param in params:
             name, value = param.text.split(':')
             self.params[name.strip()] = value.strip()
+
+    def __repr__(self):
+        return f"<Advert:{self.title}, price: {self.price}{self.currency}, {self.publication_date} with params:\n {self.params}"
 
 
 class AvitoParser:
@@ -56,7 +73,7 @@ class AvitoParser:
 
         if model:
             url = f'{url}/{model}'
-            self.params.pop('cd')    # когда добавляется модель из url пропадает параметр сd
+            self.params.pop('cd')  # когда добавляется модель из url пропадает параметр сd
 
         try:
             r = requests.get(url, params=self.params)
@@ -85,16 +102,18 @@ class AvitoParser:
 
         return self.new_urls
 
-    def _parse_advert_page(self, url: str) -> defaultdict or None:
+    @staticmethod
+    def _parse_advert_page(url: str) -> Advert or None:
         """
         Парсит страницу объявления. Создаёт объект объявления, записывает в него все найденные параметры
-        и добавляет в словарь self.adverts
+        и возвращает
         """
         try:
             r = requests.get(url)
             r.raise_for_status()
             r.encoding = 'utf-8'
-        except (requests.RequestException, ValueError):
+        except (requests.RequestException, ValueError) as exc:
+            logging.info(f'BAD URL {url}', exc_info=exc)
             return None
 
         soup = bs4.BeautifulSoup(r.text, 'lxml')
@@ -109,9 +128,7 @@ class AvitoParser:
         advert.set_price(int(price), currency)
         advert.set_publication_date(publication_date)
         advert.set_params(params)
-
-        self.adverts[url] = advert
-        return self.adverts
+        return advert
 
     def run(self, city: str):
         """
@@ -124,15 +141,15 @@ class AvitoParser:
         for link in self.new_urls:
             url = f'{self._url}{link}'
             print(url)
-            self._parse_advert_page(url)
-            break   # пока обрабатываем одну ссылку
+            self.adverts[url] = self._parse_advert_page(url)
+            print(self.adverts)
+            break  # пока обрабатываем одну ссылку
         for advert_url, advert_param in self.adverts.items():
             print('url', advert_url)
             print('param:', advert_param.params)
 
 
 if __name__ == '__main__':
+    logging.basicConfig(format='%(name)s - %(levelname)s - %(message)s', filename='parser.log', level=logging.INFO)
     parser = AvitoParser()
     parser.run(city="rossiya")
-
-
