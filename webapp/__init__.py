@@ -1,5 +1,7 @@
 from flask import Flask
-from webapp.model import db
+from webapp.model import (
+    db, Advert, Brand, ModelType, FuelType, Transmission, WheelsDrive, Condition, Body, Color, City
+)
 
 
 def create_app():
