@@ -2,30 +2,29 @@ from datetime import datetime, timedelta
 import re
 
 
-class Advert:
-    url = None
-    price = None
-    currency = None
-    publication_date = None
-    image_url = None
-    brand = None
-    model = None
-    engine_volume = None
-    horse_power = None
-    fuel_type = None
-    transmission = None
-    wheels_drive = None
-    condition = None
-    owners = None
-    year = None
-    mileage = None
-    body = None
-    color = None
-    city = None
-    hand_drive = None
+class AdvertData:
 
     def __init__(self, url):
         self.url = url
+        self.price = None
+        self.currency = None
+        self.publication_date = None
+        self.image_url = None
+        self.brand = None
+        self.model = None
+        self.engine_volume = None
+        self.horse_power = None
+        self.fuel_type = None
+        self.transmission = None
+        self.wheels_drive = None
+        self.condition = None
+        self.owners = None
+        self.year = None
+        self.mileage = None
+        self.body = None
+        self.color = None
+        self.city = None
+        self.hand_drive = None
 
     def set_img_url(self, url: str):
         self.image_url = url

@@ -4,7 +4,7 @@ import logging
 import bs4
 import requests
 
-from webapp.parsers.advert import Advert
+from webapp.parsers.advertdata import AdvertData
 
 
 class AvitoParser:
@@ -18,7 +18,7 @@ class AvitoParser:
     def __init__(self):
         self._url = 'https://www.avito.ru'
         self.new_urls = []
-        self.adverts = defaultdict(Advert)
+        self.adverts = defaultdict(AdvertData)
         self.advert_params = []
 
     def _get_page(self, city: str, model: str = None, radius: int = 0, page: int = None) -> str or None:
@@ -62,7 +62,7 @@ class AvitoParser:
 
         return self.new_urls
 
-    def _parse_advert_page(self, url: str) -> Advert or None:
+    def _parse_advert_page(self, url: str) -> AdvertData or None:
         """
         Парсит страницу объявления. Создаёт объект объявления,
         записывает в него все найденные параметры и возвращает
@@ -83,7 +83,7 @@ class AvitoParser:
         params = soup.find('ul', class_='item-params-list').find_all('li')
         address = soup.find('span', class_='item-address__string').text
 
-        advert = Advert(url)
+        advert = AdvertData(url)
         advert.set_img_url(img_url)
         advert.set_price(int(price), currency)
         advert.set_publication_date(publication_date)
