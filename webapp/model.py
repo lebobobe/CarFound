@@ -9,7 +9,7 @@ class ModelType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, index=True, nullable=False)
     brand_id = db.Column(db.Integer, db.ForeignKey('brands.id'), nullable=False)
-    brand = db.relationship('brand', backref='model_types')
+    brand = db.relationship('brands', backref='model_types')
 
 
 class BaseParam:
@@ -80,28 +80,28 @@ class Advert(db.Model):
     is_left_hand_drive = db.Column(db.Boolean, nullable=False)
 
     model_id = db.Column(db.Integer, db.ForeignKey('modeltypes.id'), nullable=False)
-    model = db.relationship('modeltype', backref='advert')
+    model = db.relationship('modeltype', backref='adverts')
 
     fuel_type_id = db.Column(db.Integer, db.ForeignKey('fueltypes.id'), nullable=False)
-    fuel_type = db.relationship('fueltype', backref='advert')
+    fuel_type = db.relationship('fueltype', backref='adverts')
 
     transmission_id = db.Column(db.Integer, db.ForeignKey('transmissions.id'), nullable=False)
-    transmission = db.relationship('transmission', backref='advert')
+    transmission = db.relationship('transmission', backref='adverts')
 
     wheels_drive_id = db.Column(db.Integer, db.ForeignKey('wheelsdrives.id'), nullable=False)
-    wheels_drive = db.relationship('wheelsdrive', backref='advert')
+    wheels_drive = db.relationship('wheelsdrive', backref='adverts')
 
     condition_id = db.Column(db.Integer, db.ForeignKey('conditions.id'), nullable=False)
-    condition = db.relationship('condition', backref='advert')
+    condition = db.relationship('condition', backref='adverts')
 
     body_id = db.Column(db.Integer, db.ForeignKey('bodies.id'), nullable=False)
-    body = db.relationship('body', backref='advert')
+    body = db.relationship('body', backref='adverts')
 
     color_id = db.Column(db.Integer, db.ForeignKey('colors.id'), nullable=False)
-    color = db.relationship('color', backref='advert')
+    color = db.relationship('color', backref='adverts')
 
     city_id = db.Column(db.Integer, db.ForeignKey('cities.id'), nullable=False)
-    city = db.relationship('city', backref='advert')
+    city = db.relationship('city', backref='adverts')
 
     def __repr__(self):
         return f"<Advert:{self.id}: {self.model_id} {self.year}y, price={self.price}>"
