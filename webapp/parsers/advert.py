@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import re
 
 
 class Advert:
@@ -80,8 +81,11 @@ class Advert:
         self._set_city(city)
 
     def _set_modification(self, modification):
-        engine_volume = float(modification.split()[0])
-        horse_power = int(modification.split('(')[-1].strip().split()[0])
+        engine_volume = re.search(r'\d\.\d', modification).group(0)
+        engine_volume = float(engine_volume)
+        horse_power = re.search(r'[\d]{2,4}\sл\.с\.', modification).group(0)
+        horse_power = int(horse_power.replace('л.с.', '').strip())
+
         self._set_engine_volume(engine_volume)
         self._set_horse_power(horse_power)
 
