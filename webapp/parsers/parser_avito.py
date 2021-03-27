@@ -9,7 +9,7 @@ from webapp.parsers.advert import Advert
 
 class AvitoParser:
     category = 'avtomobili'
-    get_params = {
+    request_parameters = {
         'cd': 1,  # непонятно что это, но есть только если не выбрана марка авто
         'radius': 0,  # Радиус поиска вокруг города в км
         's': 104,  # Сортировка (104 по дате, 1 дешевле, 2 дороже)
@@ -27,17 +27,17 @@ class AvitoParser:
         Все параметры необходимо передавать в нижнем регистре
         """
         url = f'{self._url}/{city}/{self.category}'
-        self.get_params['radius'] = radius
+        self.request_parameters['radius'] = radius
 
         if page and page > 1:
-            self.get_params['p'] = page
+            self.request_parameters['p'] = page
 
         if model:
             url = f'{url}/{model}'
-            self.get_params.pop('cd')  # когда добавляется модель из url пропадает параметр сd
+            self.request_parameters.pop('cd')  # когда добавляется модель из url пропадает параметр сd
 
         try:
-            r = requests.get(url, params=self.get_params)
+            r = requests.get(url, params=self.request_parameters)
             r.raise_for_status()
             r.encoding = 'utf-8'
             return r.text
@@ -55,7 +55,6 @@ class AvitoParser:
 
         soup = bs4.BeautifulSoup(text, 'lxml')
         titles = soup.find_all('div', class_='iva-item-titleStep-2bjuh')
-        # date = soup.find_all('span', class_='tooltip-target-wrapper-XcPdv') # тут надпись по типу (3 минуты назад)
 
         for item in titles:
             url = item.find('a').get('href')
