@@ -12,11 +12,6 @@ class ModelType(db.Model):
     brand = db.relationship('brands', backref='model_types')
 
 
-class BaseParam:
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, index=True, nullable=False)
-
-
 class Brand(db.Model):
     __tablename__ = 'brands'
     id = db.Column(db.Integer, primary_key=True)
