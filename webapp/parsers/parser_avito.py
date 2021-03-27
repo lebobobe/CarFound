@@ -23,7 +23,7 @@ class AvitoParser:
 
     def _get_page(self, city: str, model: str = None, radius: int = 0, page: int = None) -> str or None:
         """
-        Возвращает html списка объявлений отсортированных по дате
+        Возвращает html страницы списка объявлений отсортированных по дате
         Все параметры необходимо передавать в нижнем регистре
         """
         url = f'{self._url}/{city}/{self.category}'
@@ -46,7 +46,7 @@ class AvitoParser:
 
     def _get_new_links(self, city: str) -> list or None:
         """
-        заполняет список links ссылками на новые объявления c первой страницы поиска по city
+        заполняет список new_urls ссылками на новые объявления со страницы поиска по city
         """
         text = self._get_page(city=city)
 
@@ -64,8 +64,8 @@ class AvitoParser:
 
     def _parse_advert_page(self, url: str) -> Advert or None:
         """
-        Парсит страницу объявления. Создаёт объект объявления, записывает в него все найденные параметры
-        и возвращает
+        Парсит страницу объявления. Создаёт объект объявления,
+        записывает в него все найденные параметры и возвращает
         """
         try:
             r = requests.get(url)
@@ -93,6 +93,9 @@ class AvitoParser:
         return advert
 
     def _pars_params(self, params: bs4.ResultSet) -> list:
+        """
+        Заполняет advert_params дополнительными параметрами авто из объявления
+        """
         self.advert_params = []
         for param in params:
             name, value = param.text.split(':')
