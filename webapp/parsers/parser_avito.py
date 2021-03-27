@@ -1,38 +1,15 @@
 from collections import defaultdict
+import logging
 
 import bs4
 import requests
 
-
-class Advert:
-    title = None
-    price = None
-    currency = None
-    publication_date = None
-    params = defaultdict(str)
-
-    def __init__(self, url):
-        self.url = url
-
-    def set_title(self, title: str):
-        self.title = title
-
-    def set_price(self, price: int, currency: str):
-        self.price = price
-        self.currency = currency
-
-    def set_publication_date(self, publication_date: str):
-        self.publication_date = publication_date    # надо добавить переработку в datetime
-
-    def set_params(self, params: bs4.ResultSet):
-        for param in params:
-            name, value = param.text.split(':')
-            self.params[name.strip()] = value.strip()
+from webapp.parsers.advert import Advert
 
 
 class AvitoParser:
     category = 'avtomobili'
-    params = {
+    request_parameters = {
         'cd': 1,  # непонятно что это, но есть только если не выбрана марка авто
         'radius': 0,  # Радиус поиска вокруг города в км
         's': 104,  # Сортировка (104 по дате, 1 дешевле, 2 дороже)
@@ -42,24 +19,25 @@ class AvitoParser:
         self._url = 'https://www.avito.ru'
         self.new_urls = []
         self.adverts = defaultdict(Advert)
+        self.advert_params = []
 
-    def _get_page(self, city: str, model: str = None, radius: int = 0, page: int = None):
+    def _get_page(self, city: str, model: str = None, radius: int = 0, page: int = None) -> str or None:
         """
-        Возвращает html списка объявлений отсортированных по дате
+        Возвращает html страницы списка объявлений отсортированных по дате
         Все параметры необходимо передавать в нижнем регистре
         """
         url = f'{self._url}/{city}/{self.category}'
-        self.params['radius'] = radius
+        self.request_parameters['radius'] = radius
 
         if page and page > 1:
-            self.params['p'] = page
+            self.request_parameters['p'] = page
 
         if model:
             url = f'{url}/{model}'
-            self.params.pop('cd')    # когда добавляется модель из url пропадает параметр сd
+            self.request_parameters.pop('cd')  # когда добавляется модель из url пропадает параметр сd
 
         try:
-            r = requests.get(url, params=self.params)
+            r = requests.get(url, params=self.request_parameters)
             r.raise_for_status()
             r.encoding = 'utf-8'
             return r.text
@@ -68,7 +46,7 @@ class AvitoParser:
 
     def _get_new_links(self, city: str) -> list or None:
         """
-        заполняет список links ссылками на новые объявления c первой страницы поиска по city
+        заполняет список new_urls ссылками на новые объявления со страницы поиска по city
         """
         text = self._get_page(city=city)
 
@@ -77,7 +55,6 @@ class AvitoParser:
 
         soup = bs4.BeautifulSoup(text, 'lxml')
         titles = soup.find_all('div', class_='iva-item-titleStep-2bjuh')
-        # date = soup.find_all('span', class_='tooltip-target-wrapper-XcPdv') # тут надпись по типу (3 минуты назад)
 
         for item in titles:
             url = item.find('a').get('href')
@@ -85,33 +62,45 @@ class AvitoParser:
 
         return self.new_urls
 
-    def _parse_advert_page(self, url: str) -> defaultdict or None:
+    def _parse_advert_page(self, url: str) -> Advert or None:
         """
-        Парсит страницу объявления. Создаёт объект объявления, записывает в него все найденные параметры
-        и добавляет в словарь self.adverts
+        Парсит страницу объявления. Создаёт объект объявления,
+        записывает в него все найденные параметры и возвращает
         """
         try:
             r = requests.get(url)
             r.raise_for_status()
             r.encoding = 'utf-8'
-        except (requests.RequestException, ValueError):
+        except (requests.RequestException, ValueError) as exc:
+            logging.info(f'BAD URL {url}', exc_info=exc)
             return None
 
         soup = bs4.BeautifulSoup(r.text, 'lxml')
-        title = soup.find('span', class_='title-info-title-text').text.strip()
         price = soup.find('span', class_='js-item-price').get('content')
         currency = soup.find('span', class_='price-value-prices-list-item-currency_sign').span.text.strip()
         publication_date = soup.find('div', class_='title-info-metadata-item-redesign').text.strip()
+        img_url = soup.select('div.gallery-img-frame.js-gallery-img-frame')[0].get('data-url')
         params = soup.find('ul', class_='item-params-list').find_all('li')
+        address = soup.find('span', class_='item-address__string').text
 
         advert = Advert(url)
-        advert.set_title(title)
+        advert.set_img_url(img_url)
         advert.set_price(int(price), currency)
         advert.set_publication_date(publication_date)
-        advert.set_params(params)
+        advert.set_params(self._pars_params(params))
+        advert.set_address(address)
+        print(advert)
+        return advert
 
-        self.adverts[url] = advert
-        return self.adverts
+    def _pars_params(self, params: bs4.ResultSet) -> list:
+        """
+        Заполняет advert_params дополнительными параметрами авто из объявления
+        """
+        self.advert_params = []
+        for param in params:
+            name, value = param.text.split(':')
+            self.advert_params.append((name.strip(), value.strip()))
+        return self.advert_params
 
     def run(self, city: str):
         """
@@ -121,18 +110,17 @@ class AvitoParser:
         """
         if not self._get_new_links(city=city):
             raise ValueError("Нет новых объявлений")
+
         for link in self.new_urls:
             url = f'{self._url}{link}'
             print(url)
-            self._parse_advert_page(url)
-            break   # пока обрабатываем одну ссылку
-        for advert_url, advert_param in self.adverts.items():
-            print('url', advert_url)
-            print('param:', advert_param.params)
+            self.adverts[url] = self._parse_advert_page(url)
+            print()
+            print(self.adverts[url].get_params())
+            break  # пока обрабатываем одну ссылку
 
 
 if __name__ == '__main__':
+    logging.basicConfig(format='%(name)s - %(levelname)s - %(message)s', filename='parser.log', level=logging.INFO)
     parser = AvitoParser()
     parser.run(city="rossiya")
-
-
