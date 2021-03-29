@@ -10,13 +10,15 @@ class AutoruParser:
     def __init__(self):
         self.url = autoru_config.DEFAULT_URL
         self.max_page = autoru_config.PAGES_RANGE
+        self.min_delay = autoru_config.MIN_DELAY
+        self.max_delay = autoru_config.MAX_DELAY
         self.page = 1
         self.urls_to_parse = []
         self.listings = []
 
     def get_links(self):
-        while self.page <= autoru_config.PAGES_RANGE:
-            delay = uniform(autoru_config.MIN_DELAY, autoru_config.MAX_DELAY)
+        while self.page <= self.max_page:
+            delay = uniform(self.min_delay, self.max_delay)
             try:
                 response = requests.get(self.url)
                 response.raise_for_status()
@@ -36,11 +38,8 @@ class AutoruParser:
     def get_image(self, soup, listing, key):
         images = soup.find_all(class_=autoru_config.FIND_DICT['image_url'])
         for image in images:
-            string_image = str(image)
-            if 'Panorama' in string_image:
-                continue
-            elif 'avatars' in string_image:
-                listing[key] = image['src'][2::]
+            if 'avatars' in str(image):
+                listing[key] = image['src'][2:]
                 continue
         return listing
 
@@ -55,21 +54,23 @@ class AutoruParser:
                     result = result.text
                     listing[key] = result.replace('\xa0', ' ')
         self.listings.append(listing)
-        return self.listings
+
+    def check_url(self, url):
+        waiting = uniform(self.min_delay, self.max_delay)
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            response.encoding = 'utf-8'
+        except (requests.RequestException, ValueError):
+            print(None)
+        soup = BeautifulSoup(response.text, 'lxml')
+        self.get_specs(soup)
+        print(f'Обьяление добавлено в список. Жду {waiting} с.')
+        sleep(waiting)
 
     def check_urls(self):
         for url in self.urls_to_parse:
-            waiting = uniform(autoru_config.MIN_DELAY, autoru_config.MAX_DELAY)
-            try:
-                response = requests.get(url)
-                response.raise_for_status()
-                response.encoding = 'utf-8'
-            except (requests.RequestException, ValueError):
-                print(None)
-            soup = BeautifulSoup(response.text, 'lxml')
-            self.get_specs(soup)
-            print(f'Обьяление добавлено в список. Жду {waiting} с.')
-            sleep(waiting)
+            self.check_url(url)
 
     def run(self):
         self.get_links()
