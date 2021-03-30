@@ -8,16 +8,16 @@ from random import uniform
 class AutoruParser:
 
     def __init__(self):
-        self.url = autoru_config.DEFAULT_URL
         self.max_page = autoru_config.PAGES_RANGE
         self.min_delay = autoru_config.MIN_DELAY
         self.max_delay = autoru_config.MAX_DELAY
-        self.page = 1
         self.urls_to_parse = []
         self.listings = []
+        self.page = 1
 
     def get_links(self):
         while self.page <= self.max_page:
+            self.url = f'https://auto.ru/cars/used/?page={self.page}&sort=cr_date-desc&top_days=14'
             delay = uniform(self.min_delay, self.max_delay)
             try:
                 response = requests.get(self.url)
@@ -33,7 +33,6 @@ class AutoruParser:
             print(f'Задержка {delay} с.')
             sleep(delay)
             self.page += 1
-        return self.urls_to_parse
 
     def get_image(self, soup, listing, key):
         images = soup.find_all(class_=autoru_config.FIND_DICT['image_url'])
