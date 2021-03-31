@@ -114,13 +114,12 @@ class AvitoParser:
 
         try:
             advert['owners'] = extra_params['Владельцев по ПТС']
-            advert['condition'] = extra_params['Состояние'].strip(),
+            advert['condition'] = extra_params['Состояние'].strip()
             advert['mileage'] = int(extra_params['Пробег'].split()[0].strip())
         except KeyError:
             advert['owners'] = '0'
-            advert['condition'] = 'Новая'
+            advert['condition'] = 'новая'
             advert['mileage'] = 0
-
         return advert
 
     def _parse_engine_volume(self, modification: str) -> float:
@@ -162,13 +161,10 @@ class AvitoParser:
         for link in self.new_urls:
             url = f'{self._url}{link}'
             print(url)
-            try:
-                advert = AdvertData(self._parse_advert_page(url))
-                print(advert)
-                advert.add_to_database()
-            except AttributeError:
-                pass
-            # break  # пока обрабатываем только одну ссылку
+            advert = AdvertData(self._parse_advert_page(url))
+            print(advert)
+            advert.add_to_database()
+            break  # пока обрабатываем только одну ссылку
 
 
 if __name__ == '__main__':
