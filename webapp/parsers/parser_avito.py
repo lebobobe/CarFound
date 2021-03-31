@@ -5,7 +5,7 @@ import re
 import bs4
 import requests
 
-from webapp.parsers.advertdata import AdvertData
+from webapp.parsers.advert_data import AdvertData
 
 
 class AvitoParser:
