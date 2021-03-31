@@ -1,5 +1,6 @@
-from collections import defaultdict
+from datetime import datetime, timedelta
 import logging
+import re
 
 import bs4
 import requests
@@ -18,8 +19,6 @@ class AvitoParser:
     def __init__(self):
         self._url = 'https://www.avito.ru'
         self.new_urls = []
-        self.adverts = defaultdict(AdvertData)
-        self.advert_params = []
 
     def _get_page(self, city: str, model: str = None, radius: int = 0, page: int = None) -> str or None:
         """
@@ -62,9 +61,9 @@ class AvitoParser:
 
         return self.new_urls
 
-    def _parse_advert_page(self, url: str) -> AdvertData or None:
+    def _parse_advert_page(self, url: str) -> dict or None:
         """
-        Парсит страницу объявления. Создаёт объект объявления,
+        Парсит страницу объявления. Создаёт словарь,
         записывает в него все найденные параметры и возвращает
         """
         try:
@@ -77,36 +76,83 @@ class AvitoParser:
 
         soup = bs4.BeautifulSoup(r.text, 'lxml')
         price = soup.find('span', class_='js-item-price').get('content')
-        currency = soup.find('span', class_='price-value-prices-list-item-currency_sign').span.text.strip()
         publication_date = soup.find('div', class_='title-info-metadata-item-redesign').text.strip()
         img_url = soup.select('div.gallery-img-frame.js-gallery-img-frame')[0].get('data-url')
+        city = soup.find('div', class_='item-navigation').find('span').find('a').find('span').text
         params = soup.find('ul', class_='item-params-list').find_all('li')
-        address = soup.find('span', class_='item-address__string').text
 
-        advert = AdvertData(url)
-        advert.set_img_url(img_url)
-        advert.set_price(int(price), currency)
-        advert.set_publication_date(publication_date)
-        advert.set_params(self._pars_params(params))
-        advert.set_address(address)
+        advert = self._create_advert_with_extra_params(params)
+        advert['url'] = url
+        advert['price'] = int(price)
+        advert['date'] = self._set_publication_date(publication_date)
+        advert['image_url'] = img_url
+        advert['city'] = city
         print(advert)
         return advert
 
-    def _pars_params(self, params: bs4.ResultSet) -> list:
+    def _create_advert_with_extra_params(self, params: bs4.ResultSet) -> dict:
         """
-        Заполняет advert_params дополнительными параметрами авто из объявления
+        Добавляет в словарь advert с дополнительные параметры авто из объявления
         """
-        self.advert_params = []
+        extra_params = {}
+
         for param in params:
             name, value = param.text.split(':')
-            self.advert_params.append((name.strip(), value.strip()))
-        return self.advert_params
+            extra_params[name.strip()] = value.strip()
+
+        advert = {
+            'engine_volume': self._parse_engine_volume(extra_params['Модификация']),
+            'horse_power': self._parse_horse_power(extra_params['Модификация']),
+            'year': int(extra_params['Год выпуска']),
+            'is_left_hand_drive': self._parse_hand_drive(extra_params['Руль']),
+            'brand': extra_params['Марка'].strip(), 'model': extra_params['Модель'].strip(),
+            'fuel_type': extra_params['Тип двигателя'].strip(),
+            'transmission': extra_params['Коробка передач'].strip(),
+            'wheels_drive': extra_params['Привод'].strip(), 'condition': extra_params['Состояние'].strip(),
+            'body': extra_params['Тип кузова'].strip(), 'color': extra_params['Цвет'].strip()
+        }
+
+        try:
+            advert['owners'] = extra_params['Владельцев по ПТС']
+            advert['mileage'] = int(extra_params['Пробег'].split()[0].strip())
+        except KeyError:
+            advert['owners'] = 'нет'
+            advert['mileage'] = 0
+
+        return advert
+
+    def _parse_engine_volume(self, modification: str) -> float:
+        engine_volume = re.search(r'\d\.\d', modification).group(0)
+        return float(engine_volume)
+
+    def _parse_horse_power(self, modification: str) -> int:
+        horse_power = re.search(r'[\d]{2,4}\sл\.с\.', modification).group(0)
+        horse_power = int(horse_power.replace('л.с.', '').strip())
+        return horse_power
+
+    def _parse_hand_drive(self, hand_drive: str) -> bool:
+        if 'правый' in hand_drive:
+            return False
+        return True
+
+    def _set_publication_date(self, publication_date: str) -> datetime:
+        now_date = datetime.utcnow()
+        publication_str_time = publication_date.split('в')[-1].strip()
+        publication_time = datetime.strptime(publication_str_time, '%H:%M')
+
+        if 'вчера' in publication_date:
+            now_date -= timedelta(days=1)
+
+        day, month, year = now_date.day, now_date.month, now_date.year
+        hour, minute = publication_time.hour, publication_time.minute
+        publication_date = datetime(year, month, day, hour, minute)
+
+        return publication_date
 
     def run(self, city: str):
         """
         Запускает парсинг, находит ссылки с первой страницы поиска отсортированного по времени
-        и парсит самое новое объявление, создаёт объект Advert и сохраняет в него данные по объявлению
-        Добавляет в словарь с объявлениями где ключ url а значение объект Advert
+        и парсит их поочереди, создаёт объект AdvertData и через него записывает данные в БД
         """
         if not self._get_new_links(city=city):
             raise ValueError("Нет новых объявлений")
@@ -114,10 +160,14 @@ class AvitoParser:
         for link in self.new_urls:
             url = f'{self._url}{link}'
             print(url)
-            self.adverts[url] = self._parse_advert_page(url)
+            try:
+                advert = AdvertData(self._parse_advert_page(url))
+                print(advert)
+                advert.add_to_database()
+            except AttributeError:
+                pass
             print()
-            print(self.adverts[url].get_params())
-            break  # пока обрабатываем одну ссылку
+            break  # пока обрабатываем только одну ссылку
 
 
 if __name__ == '__main__':
