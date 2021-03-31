@@ -108,15 +108,17 @@ class AvitoParser:
             'brand': extra_params['Марка'].strip(), 'model': extra_params['Модель'].strip(),
             'fuel_type': extra_params['Тип двигателя'].strip(),
             'transmission': extra_params['Коробка передач'].strip(),
-            'wheels_drive': extra_params['Привод'].strip(), 'condition': extra_params['Состояние'].strip(),
+            'wheels_drive': extra_params['Привод'].strip(),
             'body': extra_params['Тип кузова'].strip(), 'color': extra_params['Цвет'].strip()
         }
 
         try:
             advert['owners'] = extra_params['Владельцев по ПТС']
+            advert['condition'] = extra_params['Состояние'].strip(),
             advert['mileage'] = int(extra_params['Пробег'].split()[0].strip())
         except KeyError:
-            advert['owners'] = 'нет'
+            advert['owners'] = '0'
+            advert['condition'] = 'Новая'
             advert['mileage'] = 0
 
         return advert
@@ -166,8 +168,7 @@ class AvitoParser:
                 advert.add_to_database()
             except AttributeError:
                 pass
-            print()
-            break  # пока обрабатываем только одну ссылку
+            # break  # пока обрабатываем только одну ссылку
 
 
 if __name__ == '__main__':
