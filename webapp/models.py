@@ -4,6 +4,12 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
+class Brand(db.Model):
+    __tablename__ = 'brands'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True, index=True, nullable=False)
+
+
 class ModelType(db.Model):
     __tablename__ = 'modeltypes'
     id = db.Column(db.Integer, primary_key=True)
@@ -13,12 +19,6 @@ class ModelType(db.Model):
 
     def __repr__(self):
         return f"Model:{self.name} id:{self.id}, brand:{self.brand_id}:{self.brand}"
-
-
-class Brand(db.Model):
-    __tablename__ = 'brands'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, index=True, nullable=False)
 
 
 class FuelType(db.Model):
