@@ -136,7 +136,6 @@ class AutoruParser:
                 listing[key] = result.replace('\xa0', '')
         self.handler(listing)
         self.listings.append(listing)
-        print(listing)
 
     def check_urls(self):
         '''
