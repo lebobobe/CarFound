@@ -164,7 +164,7 @@ class AvitoParser:
             advert = AdvertData(self._parse_advert_page(url))
             print(advert)
             advert.add_to_database()
-            break  # пока обрабатываем только одну ссылку
+            # break  # пока обрабатываем только одну ссылку
 
 
 if __name__ == '__main__':
