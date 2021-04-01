@@ -40,11 +40,10 @@ class AutoruParser:
             elif k == 'price':
                 listing[k] = int(v.replace('₽', ''))
 
-            elif k == 'is_left_hand_drive':
-                if v == 'Левый':
-                    listing[k] = True
-                else:
-                    listing[k] = False
+            elif v == 'Левый':
+                listing[k] = True
+            elif v == 'Правый':
+                listing[k] = False
 
             elif k == 'mileage':
                 listing[k] = int(v.replace('км', ''))
@@ -70,11 +69,10 @@ class AutoruParser:
                     listing[k] = 'газ'
                 listing[k] = v.lower()
 
-            elif k == 'condition':
-                if v == 'Не требует ремонта':
+            elif v == 'Не требует ремонта':
                     listing[k] = 'не битый'
-                elif v == 'Битый / не на ходу':
-                    listing[k] = 'битый'
+            elif v == 'Битый / не на ходу':
+                listing[k] = 'битый'
 
             elif k == 'date':
                 for dk, dv in autoru_config.MONTHS.items():
@@ -93,7 +91,7 @@ class AutoruParser:
         for image in images:
             string_image = str(image)
             if 'avatars' in string_image:
-                listing['image_url'] = 'https://' + image['src'][2:]
+                listing['image_url'] = 'https:' + image['src']
                 break
 
     def get_links(self):
@@ -111,7 +109,7 @@ class AutoruParser:
                 response.raise_for_status()
                 response.encoding = 'utf-8'
             except (requests.RequestException, ValueError):
-                return None
+                continue
             soup = BeautifulSoup(response.text, 'lxml')
             all_links = soup.find_all('a', self.links_class, href=True)
             for listing_title in all_links:
@@ -131,11 +129,11 @@ class AutoruParser:
         for key, value in autoru_config.FIND_DICT.items():
             if key == 'image_url':
                 self.get_image(soup, listing)
-            else:
-                results = soup.select(value)
-                for result in results:
-                    result = result.text
-                    listing[key] = result.replace('\xa0', '')
+                continue
+            results = soup.select(value)
+            for result in results:
+                result = result.text
+                listing[key] = result.replace('\xa0', '')
         self.handler(listing)
         self.listings.append(listing)
         print(listing)
@@ -158,7 +156,7 @@ class AutoruParser:
             response.raise_for_status()
             response.encoding = 'utf-8'
         except (requests.RequestException, ValueError):
-            print(None)
+            return None
         soup = BeautifulSoup(response.text, 'lxml')
         self.get_specs(soup, url)
         print(f'Обьяление добавлено в список. Жду {waiting} с.')
