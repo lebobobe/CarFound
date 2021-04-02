@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import logging
 import re
+from typing import Optional
 
 import bs4
 import requests
@@ -20,7 +21,7 @@ class AvitoParser:
         self._url = 'https://www.avito.ru'
         self.new_urls = []
 
-    def _get_page(self, city: str, model: str = None, radius: int = 0, page: int = None) -> str or None:
+    def _get_page(self, city: str, model: str = None, radius: int = 0, page: int = None) -> Optional[str]:
         """
         Возвращает html страницы списка объявлений отсортированных по дате
         Все параметры необходимо передавать в нижнем регистре
@@ -43,7 +44,7 @@ class AvitoParser:
         except (requests.RequestException, ValueError):
             return None
 
-    def _get_new_links(self, city: str) -> list or None:
+    def _get_new_links(self, city: str) -> Optional[list]:
         """
         заполняет список new_urls ссылками на новые объявления со страницы поиска по city
         """
@@ -61,7 +62,7 @@ class AvitoParser:
 
         return self.new_urls
 
-    def _parse_advert_page(self, url: str) -> dict or None:
+    def _parse_advert_page(self, url: str) -> Optional[dict]:
         """
         Парсит страницу объявления. Создаёт словарь,
         записывает в него все найденные параметры и возвращает
@@ -87,7 +88,7 @@ class AvitoParser:
         advert['date'] = self._set_publication_date(publication_date)
         advert['image_url'] = img_url
         advert['city'] = city
-        print(advert)
+        logging.info(advert)
         return advert
 
     def _create_advert_with_extra_params(self, params: bs4.ResultSet) -> dict:
@@ -160,14 +161,14 @@ class AvitoParser:
 
         for link in self.new_urls:
             url = f'{self._url}{link}'
-            print(url)
+            logging.info(url)
             advert = AdvertData(self._parse_advert_page(url))
-            print(advert)
+            logging.info(advert)
             advert.add_to_database()
             # break  # пока обрабатываем только одну ссылку
 
 
 if __name__ == '__main__':
-    logging.basicConfig(format='%(name)s - %(levelname)s - %(message)s', filename='parser.log', level=logging.INFO)
+    logging.basicConfig(format='%(name)s - %(levelname)s - %(message)s', filename='avito_parser.log', level=logging.INFO)
     parser = AvitoParser()
     parser.run(city="rossiya")
