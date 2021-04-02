@@ -1,5 +1,7 @@
-from webapp.models import db, Advert, Brand, ModelType, FuelType, Transmission, WheelsDrive, Condition, Body, Color, \
-    City
+from webapp.models import (
+    db, get_or_create, Advert, Brand, ModelType, FuelType,
+    Transmission, WheelsDrive, Condition, Body, Color, City
+)
 
 
 class AdvertData:
@@ -25,31 +27,20 @@ class AdvertData:
         self.color = params['color']
         self.city = params['city']
 
-    @staticmethod
-    def get_or_create(session, model, **kwargs):
-        instance = session.query(model).filter_by(**kwargs).first()
-        if instance:
-            return instance
-        else:
-            instance = model(**kwargs)
-            session.add(instance)
-            session.commit()
-            return instance
-
     def add_to_database(self):
         from webapp import create_app
         app = create_app()
         app.app_context().push()
 
-        brand = self.get_or_create(db.session, Brand, name=self.brand)
-        model = self.get_or_create(db.session, ModelType, name=self.model, brand_id=brand.id)
-        fuel_type = self.get_or_create(db.session, FuelType, name=self.fuel_type)
-        transmission = self.get_or_create(db.session, Transmission, name=self.transmission)
-        wheels_drive = self.get_or_create(db.session, WheelsDrive, name=self.wheels_drive)
-        condition = self.get_or_create(db.session, Condition, name=self.condition)
-        body = self.get_or_create(db.session, Body, name=self.body)
-        color = self.get_or_create(db.session, Color, name=self.color)
-        city = self.get_or_create(db.session, City, name=self.city)
+        brand = get_or_create(db.session, Brand, name=self.brand)
+        model = get_or_create(db.session, ModelType, name=self.model, brand_id=brand.id)
+        fuel_type = get_or_create(db.session, FuelType, name=self.fuel_type)
+        transmission = get_or_create(db.session, Transmission, name=self.transmission)
+        wheels_drive = get_or_create(db.session, WheelsDrive, name=self.wheels_drive)
+        condition = get_or_create(db.session, Condition, name=self.condition)
+        body = get_or_create(db.session, Body, name=self.body)
+        color = get_or_create(db.session, Color, name=self.color)
+        city = get_or_create(db.session, City, name=self.city)
 
         advert = Advert(
             url=self.url,
