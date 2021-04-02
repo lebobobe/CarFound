@@ -20,10 +20,10 @@ class AutoruParser:
         self.months = autoru_config.MONTHS
 
     def handler(self, listing):
-        '''
+        """
         Добавляет новые параметры для двигателя,
         приводит все параметры к принятому в проекте виду.
-        '''
+        """
         listing['engine_volume'] = None
         listing['horse_power'] = None
         listing['fuel_type'] = None
@@ -91,20 +91,20 @@ class AutoruParser:
         for image in images:
             string_image = str(image)
             if 'avatars' in string_image:
-                listing['image_url'] = 'https:' + image['src']
+                listing['image_url'] = f"https:{image['src']}"
                 break
 
     def get_links(self):
-        '''
+        """
         Проходит по указанному диапазону страниц и
         собирает ссылки на обьявления с каждой из них
-        '''
+        """
         while self.page <= self.max_page:
             delay = uniform(self.min_delay, self.max_delay)
+            params = {'page': self.page,
+                      'sort': 'cr_date-desc',
+                      'top_days': '14'}
             try:
-                params = {'page': self.page,
-                          'sort': 'cr_date-desc',
-                          'top_days': '14'}
                 response = requests.get(self.url, params=params)
                 response.raise_for_status()
                 response.encoding = 'utf-8'
@@ -120,10 +120,10 @@ class AutoruParser:
             self.page += 1
 
     def get_specs(self, soup, url):
-        '''
+        """
         Получает на вход ссылку на обьявление, парсит параметры из обьявления,
         вызывает обработчик параметров и записывает результаты работы.
-        '''
+        """
         listing = {}
         listing['url'] = url
         for key, value in autoru_config.FIND_DICT.items():
@@ -135,37 +135,38 @@ class AutoruParser:
                 result = result.text
                 listing[key] = result.replace('\xa0', '')
         self.handler(listing)
+        print(listing)
         self.listings.append(listing)
 
     def check_urls(self):
-        '''
+        """
         Проходит по списку собранных методом get_links ссылок,
         вызывает для каждой ссылки check_url
-        '''
+        """
         for url in self.urls_to_parse:
             self.check_url(url)
 
     def check_url(self, url):
-        '''
+        """
         Делает запрос на страницу обьявления и вызывает get_specs
-        '''
+        """
         waiting = uniform(self.min_delay, self.max_delay)
         try:
             response = requests.get(url)
             response.raise_for_status()
             response.encoding = 'utf-8'
         except (requests.RequestException, ValueError):
-            return None
+            return
         soup = BeautifulSoup(response.text, 'lxml')
         self.get_specs(soup, url)
         print(f'Обьяление добавлено в список. Жду {waiting} с.')
         sleep(waiting)
 
     def run(self):
-        '''
+        """
         Запускает метод получения ссылок на обьявления,
         после получения всех ссылок запускается их обработка.
-        '''
+        """
         self.get_links()
         self.check_urls()
 
