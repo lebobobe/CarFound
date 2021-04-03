@@ -1,7 +1,8 @@
 from flask import Flask
-from webapp.model import (
+from webapp.models import (
     db, Advert, Brand, ModelType, FuelType, Transmission, WheelsDrive, Condition, Body, Color, City
 )
+from webapp.parsers.parser_avito import AvitoParser
 
 
 def create_app():
