@@ -5,271 +5,227 @@ CarFound
 {% endblock %}
 
 {% block content %}
+<div class="row">
     <div class="filters">
-        <svg width="100%" height="80"></svg>
+        <p>
+            <div class="d-grid">
+            <button class="btn btn-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Показать фильтры
+            </button>
+            </div>
+        </p>
+          <div class="collapse" id="collapseExample">
+            <div class="filters">
+                <div class="row">
+                    <div class="col">
+                        <div class="text-center">Марка</div>
+                        <select class="form-select" aria-label="Марка">
+                            <option selected>Все</option>
+                            <option value="left">Тут</option>
+                            <option value="right">Должны</option>
+                            <option value="right">Выводиться</option>
+                            <option value="right">Марки</option>
+                          </select>
+                    </div>
+                    <div class="col">
+                        <div class="text-center">Модель</div>
+                        <select class="form-select" aria-label="Модель">
+                            <option selected>Все</option>
+                            <option value="left">Тут</option>
+                            <option value="right">Должны</option>
+                            <option value="right">Выводиться</option>
+                            <option value="right">Модели</option>
+                          </select>
+                    </div>
+                    <div class="col">
+                        <div class="text-center">Коробка</div>
+                        <select class="form-select" aria-label="Коробка">
+                            <option selected>Любая</option>
+                            <option value="left">Автоматическая</option>
+                            <option value="right">Робот</option>
+                            <option value="right">Вариатор</option>
+                            <option value="right">Механическая</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <div class="text-center">Привод</div>
+                        <select class="form-select" aria-label="Привод">
+                            <option selected>Любой</option>
+                            <option value="FWD">Передний</option>
+                            <option value="RWD">Задний</option>
+                            <option value="AWD">Полный</option>
+                          </select>
+                    </div>
+                    <div class="col">
+                        <div class="text-center">Регион</div>
+                        <select class="form-select" aria-label="Руль">
+                            <option selected>Любой</option>
+                            <option value="left">Левый</option>
+                            <option value="right">Правый</option>
+                          </select>
+                    </div>
+                    <div class="col">
+                        <div class="text-center">Обьем двигателя (от)</div>
+                        <select class="form-select" aria-label="Привод">
+                            <option selected>Любой</option>
+                            {% for x in volumes %}
+                                <option value={{ x}}>{{ x }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <div class="text-center">Обьем двигателя (до)</div>
+                        <select class="form-select" aria-label="Привод">
+                            <option selected>Любой</option>
+                            {% for x in volumes %}
+                                <option value={{ x}}>{{ x }}</option>
+                            {% endfor %}
+                          </select>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col">
+                        <div class="text-center">Мощность от</div>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    <div class="col">
+                        <div class="text-center">Мощность до</div>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    <div class="col">
+                        <div class="text-center">Кузов</div>
+                        <select class="form-select" aria-label="Кузов">
+                            <option selected>Любой</option>
+                            <option value="left">Седан</option>
+                            <option value="right">Купе</option>
+                            <option value="right">Кабриолет</option>
+                            <option value="right">Хэтчбек</option>
+                            <option value="right">Лифтбек</option>
+                            <option value="right">Универсал</option>
+                            <option value="right">Внедорожник</option>
+                            <option value="right">Пикап</option>
+                            <option value="right">Минивэн</option>
+                            <option value="right">Фургон</option>
+                            <option value="right">Лимузин</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <div class="text-center">Руль</div>
+                        <select class="form-select" aria-label="Руль">
+                            <option selected>Любой</option>
+                            <option value="left">Левый</option>
+                            <option value="right">Правый</option>
+                          </select>
+                    </div>
+                    <div class="col">
+                        <div class="text-center">Состояние</div>
+                        <select class="form-select" aria-label="Руль">
+                            <option selected>Любое</option>
+                            <option value="left">Не битая</option>
+                            <option value="right">Битая</option>
+                          </select>
+                    </div>
+                    <div class="col">
+                        <div class="text-center">Год выпуска (от)</div>
+                        <select class="form-select" aria-label="Привод">
+                            <option selected>Любой</option>
+                            {% for n in range(1960, 2022) %}
+                                <option value={{ n }}>{{ n }}</option>
+                            {% endfor %}
+                          </select>
+                    </div>
+                    <div class="col">
+                        <div class="text-center">Год выпуска (до)</div>
+                        <select class="form-select" aria-label="Привод">
+                            <option selected>Любой</option>
+                            {% for x in range(1960, 2022) %}
+                                <option value={{ x }}>{{ x }}</option>
+                            {% endfor %}
+                          </select>
+                    </div>
+                </div> 
+                <div class="row">
+                    <div class="col">
+                        <div class="text-center">Кол-во владельцев</div>
+                        <select class="form-select" aria-label="Руль">
+                            <option selected>Любой</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3 или более</option>
+                          </select>
+                    </div>
+                    <div class="col">
+                        <div class="text-center">Цвет</div>
+                        <select class="form-select" aria-label="Цвет">
+                            <option selected>Любой</option>
+                            <option value="1">Наверное</option>
+                            <option value="2">надо</option>
+                            <option value="3">выводить из базы?</option>
+                          </select>
+                    </div>
+                    <div class="col">
+                        <div class="text-center">Цена от</div>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    <div class="col">
+                        <div class="text-center">Цена до</div>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    <div class="col">
+                        <div class="text-center">Пробег от</div>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    <div class="col">
+                        <div class="text-center">Пробег до</div>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                </div>
+                <svg width="100%" height="16"></svg>
+                <div class="row">
+                    <div class="col-5"></div>
+                    <div class="col">
+                        <div class="d-grid">
+                            <button class="btn btn-light" type="button">Применить</button>
+                          </div>
+                    </div>
+                    <div class="col-5"></div>
+                </div>
+                <svg width="100%" height="16"></svg>
+            </div>
+          </div>
+    </div>
+</div>
+    
+    <div class="listings"></div>
+        {% for y in range(0,4) %}
         <div class="row">
+            {% for z in range(0,3) %}
             <div class="col">
-                <div class="text-center">Марка</div>
-                <select class="form-select" aria-label="Марка">
-                    <option selected>Все</option>
-                    <option value="left">Тут</option>
-                    <option value="right">Должны</option>
-                    <option value="right">Выводиться</option>
-                    <option value="right">Марки</option>
-                  </select>
+                    <div class="card"style="width: 25rem;">
+                        <img src="https://sun9-39.userapi.com/impg/6NGwMBoUnUhcniGvoBiEJ-yX8SRcQUj020XO-A/NvL8YGVCk0I.jpg?size=2048x1536&quality=96&sign=2028ee00be27a2cd9eac1126b34548ab&type=album" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Audi Q5 за 630000 рублей</h5>
+                            <ul class="list-group list-group-flush">
+                            <li class="list-group-item text-center">Город: Москва</li>
+                            <li class="list-group-item text-center">2009 год, пробег: 123000 км</li>
+                            <li class="list-group-item text-center">Двигатель: 2.4, 200 л.с, бензин</li>
+                            <li class="list-group-item text-center">Коробка: автоматическая</li>
+                            <li class="list-group-item text-center">Привод: полный, руль: правый</li>
+                            <li class="list-group-item text-center">Внедорожник, чёрный цвет</li>
+                            <li class="list-group-item text-center">Не битая, владельцев 2</li>
+                            </ul>
+                            <div class="card-body d-grid">
+                                <a href="#" class="btn btn-primary" role="button">Перейти на обьявление</a>
+                            </div>
+                        </div>
+                    </div>    
             </div>
-            <div class="col">
-                <div class="text-center">Модель</div>
-                <select class="form-select" aria-label="Модель">
-                    <option selected>Все</option>
-                    <option value="left">Тут</option>
-                    <option value="right">Должны</option>
-                    <option value="right">Выводиться</option>
-                    <option value="right">Модели</option>
-                  </select>
-            </div>
-            <div class="col">
-                <div class="text-center">Коробка</div>
-                <select class="form-select" aria-label="Коробка">
-                    <option selected>Любая</option>
-                    <option value="left">Автоматическая</option>
-                    <option value="right">Робот</option>
-                    <option value="right">Вариатор</option>
-                    <option value="right">Механическая</option>
-                </select>
-            </div>
-            <div class="col">
-                <div class="text-center">Привод</div>
-                <select class="form-select" aria-label="Привод">
-                    <option selected>Любой</option>
-                    <option value="FWD">Передний</option>
-                    <option value="RWD">Задний</option>
-                    <option value="AWD">Полный</option>
-                  </select>
-            </div>
-            <div class="col">
-                <div class="text-center">Регион</div>
-                <select class="form-select" aria-label="Руль">
-                    <option selected>Любой</option>
-                    <option value="left">Левый</option>
-                    <option value="right">Правый</option>
-                  </select>
-            </div>
-            <div class="col">
-                <div class="text-center">Обьем двигателя (от)</div>
-                <select class="form-select" aria-label="Привод">
-                    <option selected>Любой</option>
-                  </select>
-            </div>
-            <div class="col">
-                <div class="text-center">Обьем двигателя (до)</div>
-                <select class="form-select" aria-label="Привод">
-                    <option selected>Любой</option>
-                  </select>
-            </div>
+            {% endfor %}
         </div>
-        <div class="row ">
-            <div class="col">
-                <div class="text-center">Мощность от</div>
-                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-            </div>
-            <div class="col">
-                <div class="text-center">Мощность до</div>
-                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-            </div>
-            <div class="col">
-                <div class="text-center">Кузов</div>
-                <select class="form-select" aria-label="Кузов">
-                    <option selected>Любой</option>
-                    <option value="left">Седан</option>
-                    <option value="right">Купе</option>
-                    <option value="right">Кабриолет</option>
-                    <option value="right">Хэтчбек</option>
-                    <option value="right">Лифтбек</option>
-                    <option value="right">Универсал</option>
-                    <option value="right">Внедорожник</option>
-                    <option value="right">Пикап</option>
-                    <option value="right">Минивэн</option>
-                    <option value="right">Фургон</option>
-                    <option value="right">Лимузин</option>
-                </select>
-            </div>
-            <div class="col">
-                <div class="text-center">Руль</div>
-                <select class="form-select" aria-label="Руль">
-                    <option selected>Любой</option>
-                    <option value="left">Левый</option>
-                    <option value="right">Правый</option>
-                  </select>
-            </div>
-            <div class="col">
-                <div class="text-center">Состояние</div>
-                <select class="form-select" aria-label="Руль">
-                    <option selected>Любое</option>
-                    <option value="left">Не битая</option>
-                    <option value="right">Битая</option>
-                  </select>
-            </div>
-            <div class="col">
-                <div class="text-center">Год выпуска (от)</div>
-                <select class="form-select" aria-label="Привод">
-                    <option selected>Любой</option>
-                    {% for n in range(1960, 2022) %}
-                        <option value={{ n }}>{{ n }}</option>
-                    {% endfor %}
-                  </select>
-            </div>
-            <div class="col">
-                <div class="text-center">Год выпуска (до)</div>
-                <select class="form-select" aria-label="Привод">
-                    <option selected>Любой</option>
-                    {% for x in range(1960, 2022) %}
-                        <option value={{ x }}>{{ x }}</option>
-                    {% endfor %}
-                  </select>
-            </div>
-        </div> 
-        <div class="row">
-            <div class="col">
-                <div class="text-center">Кол-во владельцев</div>
-                <select class="form-select" aria-label="Руль">
-                    <option selected>Любой</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3 или более</option>
-                  </select>
-            </div>
-            <div class="col">
-                <div class="text-center">Цвет</div>
-                <select class="form-select" aria-label="Цвет">
-                    <option selected>Любой</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3 или более</option>
-                  </select>
-            </div>
-            <div class="col">
-                <div class="text-center">Цена от</div>
-                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-            </div>
-            <div class="col">
-                <div class="text-center">Цена до</div>
-                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-            </div>
-            <div class="col">
-                <div class="text-center">Пробег от</div>
-                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-            </div>
-            <div class="col">
-                <div class="text-center">Пробег до</div>
-                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-            </div>
-            <div class="col align-items-end">
-                <button type="button" class="btn btn-outline-primary">Primary</button>
-            </div>
-        </div>
-        <svg width="100%" height="70"></svg>
-        <div class="row ">    
-            <div class="col-4">
-                <div class="card" style="width: 24rem;">
-                    <img src="http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg" class="card-img-top" alt="http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg">
-                        <div class="card-body">
-                            <h5 class="card-title">Audi Q5 за 630000 рублей</h5>
-                            <p class="card-text">Город: Москва<br>Коробка автоматическая<br>Полный привод <br>Левый руль <br>Двигатель: 2.4, 200 л.с, бензин <br>Внедорожник, чёрный цвет <br>Не битая, 2 владельца <br>2009 год, пробег: 123000 км</p>
-                            <a href="#" class="btn btn-outline-primary">Исходное обьявление</a>
-                        </div>
-                </div>
-            </div>
-            
-            <div class="col-4">
-                <div class="card" style="width: 24rem;">
-                    <img src="http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg" class="card-img-top" alt="http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg">
-                        <div class="card-body">
-                            <h5 class="card-title">Audi Q5 за 630000 рублей</h5>
-                            <p class="card-text">Город: Москва<br>Коробка автоматическая<br>Полный привод <br>Левый руль <br>Двигатель: 2.4, 200 л.с, бензин <br>Внедорожник, чёрный цвет <br>Не битая, 2 владельца <br>2009 год, пробег: 123000 км</p>                           
-                            <a href="#" class="btn btn-outline-primary">Исходное обьявление</a>
-                        </div>
-                </div>
-            </div>
-
-            <div class="col-4">
-                <div class="card" style="width: 24rem;">
-                    <img src="http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg" class="card-img-top" alt="http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg">
-                        <div class="card-body">
-                            <h5 class="card-title">Audi Q5 за 630000 рублей</h5>
-                            <p class="card-text">Город: Москва<br>Коробка автоматическая<br>Полный привод <br>Левый руль <br>Двигатель: 2.4, 200 л.с, бензин <br>Внедорожник, чёрный цвет <br>Не битая, 2 владельца <br>2009 год, пробег: 123000 км</p>                            
-                            <a href="#" class="btn btn-outline-primary">Исходное обьявление</a>
-                        </div>
-                </div>
-            </div>
-            <svg width="100%" height="70"></svg>
-            <div class="row ">    
-                <div class="col-4">
-                    <div class="card" style="width: 24rem;">
-                        <img src="http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg" class="card-img-top" alt="http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg">
-                            <div class="card-body">
-                                <h5 class="card-title">Audi Q5 за 630000 рублей</h5>
-                                <p class="card-text">Город: Москва<br>Коробка автоматическая<br>Полный привод <br>Левый руль <br>Двигатель: 2.4, 200 л.с, бензин <br>Внедорожник, чёрный цвет <br>Не битая, 2 владельца <br>2009 год, пробег: 123000 км</p>
-                                <a href="#" class="btn btn-outline-primary">Исходное обьявление</a>
-                            </div>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="card" style="width: 24rem;">
-                        <img src="http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg" class="card-img-top" alt="http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg">
-                            <div class="card-body">
-                                <h5 class="card-title">Audi Q5 за 630000 рублей</h5>
-                                <p class="card-text">Город: Москва<br>Коробка автоматическая<br>Полный привод <br>Левый руль <br>Двигатель: 2.4, 200 л.с, бензин <br>Внедорожник, чёрный цвет <br>Не битая, 2 владельца <br>2009 год, пробег: 123000 км</p>                           
-                                <a href="#" class="btn btn-outline-primary">Исходное обьявление</a>
-                            </div>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="card" style="width: 24rem;">
-                        <img src="http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg" class="card-img-top" alt="http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg">
-                            <div class="card-body">
-                                <h5 class="card-title">Audi Q5 за 630000 рублей</h5>
-                                <p class="card-text">Город: Москва<br>Коробка автоматическая<br>Полный привод <br>Левый руль <br>Двигатель: 2.4, 200 л.с, бензин <br>Внедорожник, чёрный цвет <br>Не битая, 2 владельца <br>2009 год, пробег: 123000 км</p>                            
-                                <a href="#" class="btn btn-outline-primary">Исходное обьявление</a>
-                            </div>
-                    </div>
-                </div>
-            </div>
-            <svg width="100%" height="70"></svg>
-            <div class="row ">    
-                <div class="col-4">
-                    <div class="card" style="width: 24rem;">
-                        <img src="http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg" class="card-img-top" alt="http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg">
-                            <div class="card-body">
-                                <h5 class="card-title">Audi Q5 за 630000 рублей</h5>
-                                <p class="card-text">Город: Москва<br>Коробка автоматическая<br>Полный привод <br>Левый руль <br>Двигатель: 2.4, 200 л.с, бензин <br>Внедорожник, чёрный цвет <br>Не битая, 2 владельца <br>2009 год, пробег: 123000 км</p>
-                                <a href="#" class="btn btn-outline-primary">Исходное обьявление</a>
-                            </div>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="card" style="width: 24rem;">
-                        <img src="http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg" class="card-img-top" alt="http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg">
-                            <div class="card-body">
-                                <h5 class="card-title">Audi Q5 за 630000 рублей</h5>
-                                <p class="card-text">Город: Москва<br>Коробка автоматическая<br>Полный привод <br>Левый руль <br>Двигатель: 2.4, 200 л.с, бензин <br>Внедорожник, чёрный цвет <br>Не битая, 2 владельца <br>2009 год, пробег: 123000 км</p>                           
-                                <a href="#" class="btn btn-outline-primary">Исходное обьявление</a>
-                            </div>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="card" style="width: 24rem;">
-                        <img src="http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg" class="card-img-top" alt="http://www.imgworlds.com/wp-content/uploads/2015/12/18-CONTACTUS-HEADER.jpg">
-                            <div class="card-body">
-                                <h5 class="card-title">Audi Q5 за 630000 рублей</h5>
-                                <p class="card-text">Город: Москва<br>Коробка автоматическая<br>Полный привод <br>Левый руль <br>Двигатель: 2.4, 200 л.с, бензин <br>Внедорожник, чёрный цвет <br>Не битая, 2 владельца <br>2009 год, пробег: 123000 км</p>                            
-                                <a href="#" class="btn btn-outline-primary">Исходное обьявление</a>
-                            </div>
-                    </div>
-                </div>
-            </div>
-        <svg width="100%" height="20"></svg>
-        <nav aria-label="Page navigation example">
+        <svg width="100%" height="20"></svg>  
+        {% endfor %}
+    </div>
+    <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
               <li class="page-item disabled">
                 <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
@@ -282,7 +238,5 @@ CarFound
               </li>
             </ul>
           </nav>
-        
-    </div>
     
 {% endblock %}
