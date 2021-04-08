@@ -10,5 +10,10 @@ def index():
     return render_template('index.html', len=len(volumes), volumes=volumes)
 
 
+@app.route('/authentication')
+def authentication():
+    return render_template('login.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True)

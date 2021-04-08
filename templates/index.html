@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block title %}
-CarFound
+CarFound | Главная
 {% endblock %}
 
 {% block content %}
 <div class="row">
-    <div class="filters">
+    <div class="filters container">
         <p>
             <div class="d-grid">
             <button class="btn btn-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -15,9 +15,10 @@ CarFound
             </div>
         </p>
           <div class="collapse" id="collapseExample">
-            <div class="filters">
+            <div class="container">
                 <div class="row">
-                    <div class="col">
+                    <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Марка</div>
                         <select class="form-select" aria-label="Марка">
                             <option selected>Все</option>
@@ -27,7 +28,7 @@ CarFound
                             <option value="right">Марки</option>
                           </select>
                     </div>
-                    <div class="col">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Модель</div>
                         <select class="form-select" aria-label="Модель">
                             <option selected>Все</option>
@@ -37,7 +38,7 @@ CarFound
                             <option value="right">Модели</option>
                           </select>
                     </div>
-                    <div class="col">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Коробка</div>
                         <select class="form-select" aria-label="Коробка">
                             <option selected>Любая</option>
@@ -47,7 +48,7 @@ CarFound
                             <option value="right">Механическая</option>
                         </select>
                     </div>
-                    <div class="col">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Привод</div>
                         <select class="form-select" aria-label="Привод">
                             <option selected>Любой</option>
@@ -56,7 +57,9 @@ CarFound
                             <option value="AWD">Полный</option>
                           </select>
                     </div>
-                    <div class="col">
+                    </div>
+                    <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Регион</div>
                         <select class="form-select" aria-label="Руль">
                             <option selected>Любой</option>
@@ -64,7 +67,7 @@ CarFound
                             <option value="right">Правый</option>
                           </select>
                     </div>
-                    <div class="col">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Обьем двигателя (от)</div>
                         <select class="form-select" aria-label="Привод">
                             <option selected>Любой</option>
@@ -73,7 +76,7 @@ CarFound
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="col">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Обьем двигателя (до)</div>
                         <select class="form-select" aria-label="Привод">
                             <option selected>Любой</option>
@@ -82,17 +85,17 @@ CarFound
                             {% endfor %}
                           </select>
                     </div>
-                </div>
-                <div class="row ">
-                    <div class="col">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Мощность от</div>
                         <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                     </div>
-                    <div class="col">
+                    </div>
+                    <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Мощность до</div>
                         <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                     </div>
-                    <div class="col">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Кузов</div>
                         <select class="form-select" aria-label="Кузов">
                             <option selected>Любой</option>
@@ -109,7 +112,7 @@ CarFound
                             <option value="right">Лимузин</option>
                         </select>
                     </div>
-                    <div class="col">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Руль</div>
                         <select class="form-select" aria-label="Руль">
                             <option selected>Любой</option>
@@ -117,7 +120,7 @@ CarFound
                             <option value="right">Правый</option>
                           </select>
                     </div>
-                    <div class="col">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Состояние</div>
                         <select class="form-select" aria-label="Руль">
                             <option selected>Любое</option>
@@ -125,7 +128,9 @@ CarFound
                             <option value="right">Битая</option>
                           </select>
                     </div>
-                    <div class="col">
+                    </div>
+                    <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Год выпуска (от)</div>
                         <select class="form-select" aria-label="Привод">
                             <option selected>Любой</option>
@@ -134,7 +139,7 @@ CarFound
                             {% endfor %}
                           </select>
                     </div>
-                    <div class="col">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Год выпуска (до)</div>
                         <select class="form-select" aria-label="Привод">
                             <option selected>Любой</option>
@@ -143,9 +148,7 @@ CarFound
                             {% endfor %}
                           </select>
                     </div>
-                </div> 
-                <div class="row">
-                    <div class="col">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Кол-во владельцев</div>
                         <select class="form-select" aria-label="Руль">
                             <option selected>Любой</option>
@@ -154,7 +157,7 @@ CarFound
                             <option value="3">3 или более</option>
                           </select>
                     </div>
-                    <div class="col">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Цвет</div>
                         <select class="form-select" aria-label="Цвет">
                             <option selected>Любой</option>
@@ -163,32 +166,32 @@ CarFound
                             <option value="3">выводить из базы?</option>
                           </select>
                     </div>
-                    <div class="col">
+                    </div>
+                    <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Цена от</div>
                         <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                     </div>
-                    <div class="col">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Цена до</div>
                         <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                     </div>
-                    <div class="col">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Пробег от</div>
                         <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                     </div>
-                    <div class="col">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Пробег до</div>
                         <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                     </div>
-                </div>
+                    </div>
                 <svg width="100%" height="16"></svg>
                 <div class="row">
-                    <div class="col-5"></div>
-                    <div class="col">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <div class="d-grid">
                             <button class="btn btn-light" type="button">Применить</button>
                           </div>
                     </div>
-                    <div class="col-5"></div>
                 </div>
                 <svg width="100%" height="16"></svg>
             </div>
@@ -196,12 +199,11 @@ CarFound
     </div>
 </div>
     
-    <div class="listings"></div>
-        {% for y in range(0,4) %}
+    <div class="listings">
         <div class="row">
-            {% for z in range(0,3) %}
-            <div class="col">
-                    <div class="card"style="width: 25rem;">
+            {% for z in range(0,12) %}
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col xl-4 col-xxl-4">
+                    <div class="card"style="width: 26rem">
                         <img src="https://sun9-39.userapi.com/impg/6NGwMBoUnUhcniGvoBiEJ-yX8SRcQUj020XO-A/NvL8YGVCk0I.jpg?size=2048x1536&quality=96&sign=2028ee00be27a2cd9eac1126b34548ab&type=album" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title text-center">Audi Q5 за 630000 рублей</h5>
@@ -211,8 +213,8 @@ CarFound
                             <li class="list-group-item text-center">Двигатель: 2.4, 200 л.с, бензин</li>
                             <li class="list-group-item text-center">Коробка: автоматическая</li>
                             <li class="list-group-item text-center">Привод: полный, руль: правый</li>
-                            <li class="list-group-item text-center">Внедорожник, чёрный цвет</li>
-                            <li class="list-group-item text-center">Не битая, владельцев 2</li>
+                            <li class="list-group-item text-center">Внедорожник, цвет: чёрный</li>
+                            <li class="list-group-item text-center">Не битая, владельцев: 2</li>
                             </ul>
                             <div class="card-body d-grid">
                                 <a href="#" class="btn btn-primary" role="button">Перейти на обьявление</a>
@@ -222,9 +224,8 @@ CarFound
             </div>
             {% endfor %}
         </div>
-        <svg width="100%" height="20"></svg>  
-        {% endfor %}
     </div>
+    <svg width="100%" height="16"></svg>
     <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
               <li class="page-item disabled">
