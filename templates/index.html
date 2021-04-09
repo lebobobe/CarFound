@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% block title %}
+CarFound | Главная
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="filters container">
+        <p>
+            <div class="d-grid">
+            <button class="btn btn-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Показать фильтры
+            </button>
+            </div>
+        </p>
+          <div class="collapse" id="collapseExample">
+            <div class="container">
+                <div class="row">
+                    <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="text-center">Марка</div>
+                        <select class="form-select" aria-label="Марка">
+                            <option selected>Все</option>
+                            <option value="left">Тут</option>
+                            <option value="right">Должны</option>
+                            <option value="right">Выводиться</option>
+                            <option value="right">Марки</option>
+                          </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="text-center">Модель</div>
+                        <select class="form-select" aria-label="Модель">
+                            <option selected>Все</option>
+                            <option value="left">Тут</option>
+                            <option value="right">Должны</option>
+                            <option value="right">Выводиться</option>
+                            <option value="right">Модели</option>
+                          </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="transmission text-center">Коробка передач</div>
+                        <select class="transmission form-select" aria-label="Коробка передач">
+                            <option selected>Любая</option>
+                            <option value="automatic">Автоматическая</option>
+                            <option value="robot">Робот</option>
+                            <option value="variator">Вариатор</option>
+                            <option value="mechanical">Механическая</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="city text-center">Город</div>
+                        <select class="city form-select" aria-label="Регион">
+                            <option selected>Любой</option>
+                            <option value="region">Выводим</option>
+                            <option value="region">Из базы</option>
+                          </select>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="volume-min text-center">Обьем двигателя (от)</div>
+                        <select class="volume-min form-select" aria-label="Обьем двигателя (от)">
+                            <option selected>Любой</option>
+                            {% for x in volumes %}
+                                <option value={{ x }}>{{ x }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="volume-max text-center">Обьем двигателя (до)</div>
+                        <select class="volume-max form-select" aria-label="Обьем двигателя (до)">
+                            <option selected>Любой</option>
+                            {% for x in volumes %}
+                                <option value={{ x }}>{{ x }}</option>
+                            {% endfor %}
+                          </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="power-min text-center">Мощность от</div>
+                        <input type="text" class="power-min form-control" aria-label="power-min input" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="power-max text-center">Мощность до</div>
+                        <input type="text" class="power-max form-control" aria-label="power-max input" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <div class="year-min text-center">Год выпуска (от)</div>
+                            <select class="year-min form-select" aria-label="Год выпуска (от)">
+                                <option selected>Любой</option>
+                                {% for n in range(1960, 2022) %}
+                                    <option value={{ n }}>{{ n }}</option>
+                                {% endfor %}
+                              </select>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <div class="year-max text-center">Год выпуска (до)</div>
+                            <select class="year-max form-select" aria-label="Год выпуска (до)">
+                                <option selected>Любой</option>
+                                {% for x in range(1960, 2022) %}
+                                    <option value={{ x }}>{{ x }}</option>
+                                {% endfor %}
+                              </select>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <div class="owners text-center">Кол-во владельцев</div>
+                            <select class="owners form-select" aria-label="Кол-во владельцев">
+                                <option selected>Любое</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3 или более</option>
+                              </select>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <div class="color text-center">Цвет</div>
+                            <select class="color form-select" aria-label="Цвет">
+                                <option selected>Любой</option>
+                                <option value="1">Наверное</option>
+                                <option value="2">надо</option>
+                                <option value="3">выводить из базы?</option>
+                              </select>
+                        </div>
+                        </div>
+                    <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="text-center">Привод</div>
+                        <select class="form-select" aria-label="Привод">
+                            <option selected>Любой</option>
+                            <option value="FWD">Передний</option>
+                            <option value="RWD">Задний</option>
+                            <option value="AWD">Полный</option>
+                          </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="body text-center">Кузов</div>
+                        <select class="body form-select" aria-label="Кузов">
+                            <option selected>Любой</option>
+                            <option value="sedan">Седан</option>
+                            <option value="coupe">Купе</option>
+                            <option value="cabrio">Кабриолет</option>
+                            <option value="hatchback">Хэтчбек</option>
+                            <option value="liftback">Лифтбек</option>
+                            <option value="station-wagon">Универсал</option>
+                            <option value="suv">Внедорожник</option>
+                            <option value="pickup">Пикап</option>
+                            <option value="minivan">Минивэн</option>
+                            <option value="van">Фургон</option>
+                            <option value="limousine">Лимузин</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="wheel-drive text-center">Руль</div>
+                        <select class="wheel-drive form-select" aria-label="Руль">
+                            <option selected>Любой</option>
+                            <option value="left">Левый</option>
+                            <option value="right">Правый</option>
+                          </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="condition text-center">Состояние</div>
+                        <select class="condition form-select" aria-label="Состояние">
+                            <option selected>Любое</option>
+                            <option value="not-broken">Не битая</option>
+                            <option value="broken">Битая</option>
+                          </select>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="price-min text-center">Цена от</div>
+                        <input type="text" class=" price-min form-control" aria-label="price-min input" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="price-max text-center">Цена до</div>
+                        <input type="text" class="price-max form-control" aria-label="price-max input" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="mileage-min text-center">Пробег от</div>
+                        <input type="text" class="mileage-min form-control" aria-label="mileage-min example input" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="mileage-max text-center">Пробег до</div>
+                        <input type="text" class="mileage-max form-control" aria-label="mileage-max input" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    </div>
+                <svg width="100%" height="16"></svg>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="d-grid">
+                            <button class="btn btn-light" type="button">Применить</button>
+                          </div>
+                    </div>
+                </div>
+                <svg width="100%" height="16"></svg>
+            </div>
+          </div>
+    </div>
+</div>
+    
+    <div class="listings">
+        <div class="row">
+            {% for z in range(0,12) %}
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6  col xl-4 col-xxl-4">
+                    <div class="card"style="width: 26rem">
+                        <img src="{{ pic_url }}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">{{ brand }} {{ model }} за {{ price }} рублей</h5>
+                            <ul class="list-group list-group-flush">
+                            <li class="list-group-item text-center">Город: {{ city }}</li>
+                            <li class="list-group-item text-center">{{ year }} год, пробег: {{ mileage }} км</li>
+                            <li class="list-group-item text-center">Двигатель: {{ volume }}, {{ hp }} л.с, {{ fuel_type }}</li>
+                            <li class="list-group-item text-center">Коробка: {{ transmission }}</li>
+                            <li class="list-group-item text-center">Привод: {{ WD }}, руль: {{ wheel_drive}}</li>
+                            <li class="list-group-item text-center">{{ body }}, цвет: {{ color }}</li>
+                            <li class="list-group-item text-center">{{ condition }}, владельцев: {{ owners }}</li>
+                            </ul>
+                            <div class="card-body d-grid">
+                                <a href="{{ listing_url }}" class="btn btn-primary" role="button">Перейти на обьявление</a>
+                            </div>
+                        </div>
+                    </div>    
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <svg width="100%" height="16"></svg>
+    <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+              </li>
+            </ul>
+          </nav>
+    
+{% endblock %}
