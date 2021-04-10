@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
 import logging
+import random
 import re
+from time import sleep
 from typing import Optional
 
 import bs4
@@ -162,10 +164,15 @@ class AvitoParser:
         for link in self.new_urls:
             url = f'{self._url}{link}'
             logging.info(url)
-            advert = AdvertData(self._parse_advert_page(url))
-            logging.info(advert)
+            try:
+                sleep_time = random.randint(500, 1700)
+                sleep(sleep_time/9)
+                advert = AdvertData(self._parse_advert_page(url))
+            except AttributeError as error:
+                logging.info(f'BAD URL {url}', exc_info=error)
+                continue
+            logging.info(f'Add advert from avito: {advert}')
             advert.add_to_database()
-            # break  # пока обрабатываем только одну ссылку
 
 
 if __name__ == '__main__':
