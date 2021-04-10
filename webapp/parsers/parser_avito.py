@@ -8,7 +8,7 @@ from typing import Optional
 import bs4
 import requests
 
-from webapp.parsers.advert_data import AdvertData
+from webapp.parsers.advert_data import AdvertData, RepeatedAdvert
 
 
 class AvitoParser:
@@ -39,7 +39,10 @@ class AvitoParser:
             self.request_parameters.pop('cd')  # когда добавляется модель из url пропадает параметр сd
 
         try:
-            r = requests.get(url, params=self.request_parameters)
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36'
+            }
+            r = requests.get(url, params=self.request_parameters, headers=headers)
             r.raise_for_status()
             r.encoding = 'utf-8'
             return r.text
@@ -171,8 +174,13 @@ class AvitoParser:
             except AttributeError as error:
                 logging.info(f'BAD URL {url}', exc_info=error)
                 continue
+
             logging.info(f'Add advert from avito: {advert}')
-            advert.add_to_database()
+            try:
+                advert.add_to_database()
+            except RepeatedAdvert:
+                logging.info(f'Repeat advert: {url}')
+                break
 
 
 if __name__ == '__main__':

@@ -4,6 +4,11 @@ from webapp.models import (
 )
 
 
+class RepeatedAdvert(Exception):
+    def __init__(self, text):
+        self.txt = text
+
+
 class AdvertData:
 
     def __init__(self, params: dict):
@@ -31,6 +36,9 @@ class AdvertData:
         from webapp import create_app
         app = create_app()
         app.app_context().push()
+
+        if db.session.query(Advert).filter(Advert.url == self.url).count() > 0:
+            raise RepeatedAdvert
 
         brand = get_or_create(db.session, Brand, name=self.brand)
         model = get_or_create(db.session, ModelType, name=self.model, brand_id=brand.id)
