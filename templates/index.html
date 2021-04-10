@@ -199,12 +199,12 @@ CarFound | Главная
     </div>
 </div>
     
-    <div class="listings">
+    <div class="listings ">
         <div class="row">
             {% for z in range(0,12) %}
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6  col xl-4 col-xxl-4">
-                    <div class="card"style="width: 26rem">
-                        <img src="{{ pic_url }}" class="card-img-top" alt="...">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col xl-4 col-xxl-4 ">
+                    <div class="card mb-3 h-90 mx-auto"style="max-width: 26rem">
+                        <img src="{{ pic_url }}" class="img-max-width:7 rem; card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title text-center">{{ brand }} {{ model }} за {{ price }} рублей</h5>
                             <ul class="list-group list-group-flush">
@@ -225,7 +225,6 @@ CarFound | Главная
             {% endfor %}
         </div>
     </div>
-    <svg width="100%" height="16"></svg>
     <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
               <li class="page-item disabled">
