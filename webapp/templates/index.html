@@ -198,12 +198,13 @@ CarFound | Главная
           </div>
     </div>
 </div>
+</div>
     
     <div class="listings">
         <div class="row">
             {% for advert in volumes %}
-                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6  col xl-4 col-xxl-4">
-                        <div class="card"style="width: 26rem">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col xl-4 col-xxl-4">
+                        <div class="card mb-3 h-90 mx-auto"style="width: 26rem">
                             <img src="{{ advert.pic_url }}" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title text-center">{{ advert.brand }} {{ advert.model }} за {{ advert.price }} рублей</h5>
@@ -225,7 +226,6 @@ CarFound | Главная
             {% endfor %}
         </div>
     </div>
-    <svg width="100%" height="16"></svg>
     <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
               <li class="page-item disabled">
