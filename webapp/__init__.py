@@ -37,7 +37,8 @@ def create_app():
                 'condition': advert.condition.name,
                 'owners': advert.owners,
                 'pic_url': advert.image_url,
-                'listing_url': advert.url
+                'listing_url': advert.url,
+                'publication_date': advert.date
             }
             volumes.append(advert_data)
         print(volumes)
