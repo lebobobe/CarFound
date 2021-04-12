@@ -62,18 +62,18 @@ CarFound | Главная
                         <div class="volume-min text-center">Обьем двигателя (от)</div>
                         <select class="volume-min form-select" aria-label="Обьем двигателя (от)">
                             <option selected>Любой</option>
-                            {% for x in volumes %}
-                                <option value={{ x }}>{{ x }}</option>
-                            {% endfor %}
+{#                            {% for x in volumes %}#}
+{#                                <option value={{ x }}>{{ x }}</option>#}
+{#                            {% endfor %}#}
                         </select>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="volume-max text-center">Обьем двигателя (до)</div>
                         <select class="volume-max form-select" aria-label="Обьем двигателя (до)">
                             <option selected>Любой</option>
-                            {% for x in volumes %}
-                                <option value={{ x }}>{{ x }}</option>
-                            {% endfor %}
+{#                            {% for x in volumes %}#}
+{#                                <option value={{ x }}>{{ x }}</option>#}
+{#                            {% endfor %}#}
                           </select>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
@@ -202,20 +202,20 @@ CarFound | Главная
     
     <div class="listings">
         <div class="row">
-            {% for advert in volumes %}
+            {% for advert in pages.items %}
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col xl-4 col-xxl-4">
                         <div class="card mb-3 h-90 mx-auto"style="width: 26rem">
-                            <img src="{{ advert.pic_url }}" class="card-img-top" alt="...">
+                            <img src="{{ advert.image_url }}" class="card-img-top" alt="...">
                             <div class="card-body">
-                                <h5 class="card-title text-center">{{ advert.brand }} {{ advert.model }} за {{ advert.price }} рублей</h5>
+                                <h5 class="card-title text-center">{{ advert.model.brand.name }} {{ advert.model.name }} за {{ advert.price }} рублей</h5>
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item text-center">Город: {{ advert.city }}</li>
+                                    <li class="list-group-item text-center">Город: {{ advert.city.name }}</li>
                                     <li class="list-group-item text-center">{{ advert.year }} год, пробег: {{ advert.mileage }} км</li>
-                                    <li class="list-group-item text-center">Двигатель: {{ advert.volume }}, {{ advert.hp }} л.с, {{ advert.fuel_type }}</li>
-                                    <li class="list-group-item text-center">Коробка: {{ advert.transmission }}</li>
-                                    <li class="list-group-item text-center">Привод: {{ advert.WD }}, руль: {{ advert.wheel_drive}}</li>
-                                    <li class="list-group-item text-center">{{ advert.body }}, цвет: {{ advert.color }}</li>
-                                    <li class="list-group-item text-center">{{ advert.condition }}, владельцев: {{ advert.owners }}</li>
+                                    <li class="list-group-item text-center">Двигатель: {{ advert.engine_volume }}, {{ advert.horse_power }} л.с, {{ advert.fuel_type.name }}</li>
+                                    <li class="list-group-item text-center">Коробка: {{ advert.transmission.name }}</li>
+                                    <li class="list-group-item text-center">Привод: {{ advert.wheels_drive.name }}, руль: {{ 'Левый' if advert.is_left_hand_drive else 'Правый' }}</li>
+                                    <li class="list-group-item text-center">{{ advert.body.name }}, цвет: {{ advert.color.name }}</li>
+                                    <li class="list-group-item text-center">{{ advert.condition.name }}, владельцев: {{ advert.owners }}</li>
                                 </ul>
                                 <div class="card-body d-grid">
                                     <a href="{{ advert.listing_url }}" class="btn btn-primary" role="button">Перейти на обьявление</a>
@@ -228,14 +228,16 @@ CarFound | Главная
     </div>
     <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
-              <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+              <li {% if not pages.has_prev %} class="page-item disabled" {% endif %}>
+                <a class="page-link" href="./?page={{ pages.prev_num }}" tabindex="-1" aria-disabled="true">Previous</a>
               </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#">Next</a>
+                {% for page in pages.iter_pages() %}
+                    <li {% if page == pages.page %} class="page-item active" {% endif %}>
+                        <a class="page-link" href="./?page={{page}}">{{ page }}</a>
+                    </li>
+                {% endfor %}
+              <li {% if not pages.has_next %} class="page-item disabled" {% endif %}>
+                <a class="page-link" href="./?page={{ pages.next_num }}" tabindex="-1" aria-disabled="true">Next</a>
               </li>
             </ul>
           </nav>
