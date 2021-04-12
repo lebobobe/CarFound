@@ -20,7 +20,7 @@ def create_app():
             page = 1
 
         adverts = Advert.query.order_by(Advert.date.desc())
-        pages = adverts.paginate(page=page, per_page=10)
+        pages = adverts.paginate(page=page, per_page=12)
 
         return render_template('index.html', pages=pages)
 
