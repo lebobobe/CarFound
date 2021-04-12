@@ -204,14 +204,14 @@ CarFound | Главная
         <div class="row mx-auto">
             {% for advert in pages.items %}
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col xl-4 col-xxl-4 mx-auto">
-                        <div class="card mb-3 h-90 mx-auto"style="width: 26rem">
+                        <div class="card mb-3 h-90 mx-auto"style="min-width: 15rem; max-width: 26rem">
                             <img src="{{ advert.image_url }}" class="card-img-top" style="width: 100%; height: 400px; object-fit: cover;" alt="...">
                             <div class="card-body">
-                                <h5 class="card-title text-center">{{ advert.model.brand.name }} {{ advert.model.name }} в г. {{ advert.city.name }} <p>за {{ advert.price }} рублей </p></h5>
+                                <h5 class="card-title text-center">{{ advert.model.brand.name }} {{ advert.model.name }}, {{ advert.year }} год</h5>
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item text-center">{{ advert.year }} год, пробег: {{ advert.mileage }} км</li>
+                                    <li class="list-group-item text-center">г. {{ advert.city.name }}, цена: {{ advert.price }} рублей</li>
                                     <li class="list-group-item text-center">Двигатель: {{ advert.engine_volume }}, {{ advert.horse_power }} л.с, {{ advert.fuel_type.name }}</li>
-                                    <li class="list-group-item text-center">Коробка: {{ advert.transmission.name }}</li>
+                                    <li class="list-group-item text-center">Пробег: {{ advert.mileage }} км, коробка: {{ advert.transmission.name }}</li>
                                     <li class="list-group-item text-center">Привод: {{ advert.wheels_drive.name }}, руль: {{ 'Левый' if advert.is_left_hand_drive else 'Правый' }}</li>
                                     <li class="list-group-item text-center">{{ advert.body.name }}, цвет: {{ advert.color.name }}</li>
                                     <li class="list-group-item text-center">{{ advert.condition.name }}, владельцев: {{ advert.owners }}</li>
