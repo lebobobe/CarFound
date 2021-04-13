@@ -31,10 +31,12 @@ def create_app():
         adverts = Advert.query.order_by(Advert.date.desc())
         pages = adverts.paginate(page=page, per_page=12)
 
+        volumes = [round(x * 0.1, 1) for x in range(2, 80)]
+
         return render_template(
             'index.html', brands=brands, model_types=model_types, transmissions=transmissions,
-            cities=cities, colors=colors, wheels_drives=wheels_drives, bodies=bodies, conditions=conditions,
-            pages=pages
+            cities=cities, colors=colors, wheels_drives=wheels_drives, bodies=bodies,
+            conditions=conditions, pages=pages, volumes=volumes
         )
 
     @app.route('/authentication')
