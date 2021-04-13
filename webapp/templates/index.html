@@ -22,38 +22,36 @@ CarFound | Главная
                         <div class="text-center">Марка</div>
                         <select class="form-select" aria-label="Марка">
                             <option selected>Все</option>
-                            <option value="left">Тут</option>
-                            <option value="right">Должны</option>
-                            <option value="right">Выводиться</option>
-                            <option value="right">Марки</option>
+                            {% for brand in brands %}
+                                <option value="right">{{ brand.name }}</option>
+                            {% endfor %}
                           </select>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Модель</div>
                         <select class="form-select" aria-label="Модель">
                             <option selected>Все</option>
-                            <option value="left">Тут</option>
-                            <option value="right">Должны</option>
-                            <option value="right">Выводиться</option>
-                            <option value="right">Модели</option>
+                            {% for model_type in model_types %}
+                                <option value="right">{{ model_type.name }}</option>
+                            {% endfor %}
                           </select>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="transmission text-center">Коробка передач</div>
                         <select class="transmission form-select" aria-label="Коробка передач">
                             <option selected>Любая</option>
-                            <option value="automatic">Автоматическая</option>
-                            <option value="robot">Робот</option>
-                            <option value="variator">Вариатор</option>
-                            <option value="mechanical">Механическая</option>
+                            {% for transmission in transmissions %}
+                                <option value="right">{{ transmission.name }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="city text-center">Город</div>
                         <select class="city form-select" aria-label="Регион">
                             <option selected>Любой</option>
-                            <option value="region">Выводим</option>
-                            <option value="region">Из базы</option>
+                            {% for city in cities %}
+                                <option value="right">{{ city.name }}</option>
+                            {% endfor %}
                           </select>
                     </div>
                     </div>
@@ -117,9 +115,9 @@ CarFound | Главная
                             <div class="color text-center">Цвет</div>
                             <select class="color form-select" aria-label="Цвет">
                                 <option selected>Любой</option>
-                                <option value="1">Наверное</option>
-                                <option value="2">надо</option>
-                                <option value="3">выводить из базы?</option>
+                                {% for color in colors %}
+                                    <option value="right">{{ color.name }}</option>
+                                {% endfor %}
                               </select>
                         </div>
                         </div>
@@ -128,26 +126,18 @@ CarFound | Главная
                         <div class="text-center">Привод</div>
                         <select class="form-select" aria-label="Привод">
                             <option selected>Любой</option>
-                            <option value="FWD">Передний</option>
-                            <option value="RWD">Задний</option>
-                            <option value="AWD">Полный</option>
+                            {% for wheels_drive in wheels_drives %}
+                                <option value="right">{{ wheels_drive.name }}</option>
+                            {% endfor %}
                           </select>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="body text-center">Кузов</div>
                         <select class="body form-select" aria-label="Кузов">
                             <option selected>Любой</option>
-                            <option value="sedan">Седан</option>
-                            <option value="coupe">Купе</option>
-                            <option value="cabrio">Кабриолет</option>
-                            <option value="hatchback">Хэтчбек</option>
-                            <option value="liftback">Лифтбек</option>
-                            <option value="station-wagon">Универсал</option>
-                            <option value="suv">Внедорожник</option>
-                            <option value="pickup">Пикап</option>
-                            <option value="minivan">Минивэн</option>
-                            <option value="van">Фургон</option>
-                            <option value="limousine">Лимузин</option>
+                            {% for body in bodies %}
+                                <option value="right">{{ body.name }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
@@ -162,8 +152,9 @@ CarFound | Главная
                         <div class="condition text-center">Состояние</div>
                         <select class="condition form-select" aria-label="Состояние">
                             <option selected>Любое</option>
-                            <option value="not-broken">Не битая</option>
-                            <option value="broken">Битая</option>
+                            {% for condition in conditions %}
+                                <option value="right">{{ condition.name }}</option>
+                            {% endfor %}
                           </select>
                     </div>
                     </div>
@@ -218,7 +209,7 @@ CarFound | Главная
                                     <li class="list-group-item text-center">Опубликовано {{ advert.date.strftime('%m/%d/%Y в %H:%M') }}</li>
                                 </ul>
                                 <div class="card-body d-grid">
-                                    <a href="{{ advert.image_url }}" class="btn btn-primary" role="button">Перейти на обьявление</a>
+                                    <a href="{{ advert.url }}" class="btn btn-primary" role="button">Перейти на обьявление</a>
                                 </div>
                             </div>
                         </div>
