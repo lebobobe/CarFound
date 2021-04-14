@@ -11,7 +11,7 @@ def create_app():
     db.init_app(app)
 
     @app.route('/')
-    @app.route('/index')
+    @app.route('/index', methods=['GET', 'POST'])
     def index():
         page = request.args.get('page')
         if page and page.isdigit():

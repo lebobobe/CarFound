@@ -15,42 +15,43 @@ CarFound | Главная
             </div>
         </p>
           <div class="collapse" id="collapseExample">
+            <form class="form-inline" method="GET" action="{{ url_for('index') }}">
             <div class="container">
                 <div class="row">
                     <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Марка</div>
-                        <select class="form-select" aria-label="Марка">
-                            <option selected>Все</option>
+                        <select class="form-select form-control" id="brand" name="brand">
+                            <option selected value=any>Все</option>
                             {% for brand in brands %}
-                                <option value="right">{{ brand.name }}</option>
+                                <option value={{ brand.name }}>{{ brand.name }}</option>
                             {% endfor %}
                           </select>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Модель</div>
-                        <select class="form-select" aria-label="Модель">
-                            <option selected>Все</option>
+                        <select class="form-select form-control" id="model" name="model">
+                            <option selected value=any>Все</option>
                             {% for model_type in model_types %}
-                                <option value="right">{{ model_type.name }}</option>
+                                <option value={{ model_type.name }}>{{ model_type.name }}</option>
                             {% endfor %}
                           </select>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="transmission text-center">Коробка передач</div>
-                        <select class="transmission form-select" aria-label="Коробка передач">
-                            <option selected>Любая</option>
+                        <select class="form-select form-control" id="transmission" name="transmission">
+                            <option selected value=any>Любая</option>
                             {% for transmission in transmissions %}
-                                <option value="right">{{ transmission.name }}</option>
+                                <option value={{ transmission.name }}>{{ transmission.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="city text-center">Город</div>
-                        <select class="city form-select" aria-label="Регион">
-                            <option selected>Любой</option>
+                        <select class="form-select form-control" id="city" name="city">
+                            <option selected value=any>Любой</option>
                             {% for city in cities %}
-                                <option value="right">{{ city.name }}</option>
+                                <option value={{ city.name }}>{{ city.name }}</option>
                             {% endfor %}
                           </select>
                     </div>
@@ -58,8 +59,8 @@ CarFound | Главная
                     <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="volume-min text-center">Обьем двигателя (от)</div>
-                        <select class="volume-min form-select" aria-label="Обьем двигателя (от)">
-                            <option selected>Любой</option>
+                        <select class="form-select form-control" id="volume-min" name="volume-min">
+                            <option selected value=any>Любой</option>
                             {% for x in volumes %}
                                 <option value={{ x }}>{{ x }}</option>
                             {% endfor %}
@@ -67,27 +68,27 @@ CarFound | Главная
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="volume-max text-center">Обьем двигателя (до)</div>
-                        <select class="volume-max form-select" aria-label="Обьем двигателя (до)">
-                            <option selected>Любой</option>
+                        <select class="form-select form-control" id="volume-max" name="volume-max">
+                            <option selected value=any>Любой</option>
                             {% for x in volumes %}
                                 <option value={{ x }}>{{ x }}</option>
                             {% endfor %}
                           </select>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                        <div class="power-min text-center">Мощность от</div>
-                        <input type="text" class="power-min form-control" aria-label="power-min input" aria-describedby="inputGroup-sizing-sm">
+                        <div class="text-center">Мощность от</div>
+                        <input type="text" class="power-min form-control" id="power-min" name="power-min" aria-describedby="inputGroup-sizing-sm">
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                        <div class="power-max text-center">Мощность до</div>
-                        <input type="text" class="power-max form-control" aria-label="power-max input" aria-describedby="inputGroup-sizing-sm">
+                        <div class="text-center">Мощность до</div>
+                        <input type="text" class="power-max form-control" id="power-max" name="power-max" aria-describedby="inputGroup-sizing-sm">
                     </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <div class="year-min text-center">Год выпуска (от)</div>
-                            <select class="year-min form-select" aria-label="Год выпуска (от)">
-                                <option selected>Любой</option>
+                            <div class="text-center">Год выпуска (от)</div>
+                            <select class="form-select form-control" id="year-min" name="year-min">
+                                <option selected value=any>Любой</option>
                                 {% for n in range(1960, 2022) %}
                                     <option value={{ n }}>{{ n }}</option>
                                 {% endfor %}
@@ -95,17 +96,17 @@ CarFound | Главная
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <div class="year-max text-center">Год выпуска (до)</div>
-                            <select class="year-max form-select" aria-label="Год выпуска (до)">
-                                <option selected>Любой</option>
+                            <select class="year-max form-select form-control" id="year-max" name="year-max">
+                                <option selected value=any>Любой</option>
                                 {% for x in range(1960, 2022) %}
                                     <option value={{ x }}>{{ x }}</option>
                                 {% endfor %}
                               </select>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <div class="owners text-center">Кол-во владельцев</div>
-                            <select class="owners form-select" aria-label="Кол-во владельцев">
-                                <option selected>Любое</option>
+                            <div class="text-center">Кол-во владельцев</div>
+                            <select class="form-select" id="owners" name="owners">
+                                <option selected value=any>Любое</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3 или более</option>
@@ -113,10 +114,10 @@ CarFound | Главная
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                             <div class="color text-center">Цвет</div>
-                            <select class="color form-select" aria-label="Цвет">
-                                <option selected>Любой</option>
+                            <select class="color form-select form-control" id="color" name="color">
+                                <option selected value=any>Любой</option>
                                 {% for color in colors %}
-                                    <option value="right">{{ color.name }}</option>
+                                    <option value={{ color.name }}>{{ color.name }}</option>
                                 {% endfor %}
                               </select>
                         </div>
@@ -124,68 +125,69 @@ CarFound | Главная
                     <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
                         <div class="text-center">Привод</div>
-                        <select class="form-select" aria-label="Привод">
-                            <option selected>Любой</option>
+                        <select class="form-select form-control" id="wd" name="wd">
+                            <option selected value=any>Любой</option>
                             {% for wheels_drive in wheels_drives %}
-                                <option value="right">{{ wheels_drive.name }}</option>
+                                <option value={{ wheels_drive.name }}>{{ wheels_drive.name }}</option>
                             {% endfor %}
                           </select>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                        <div class="body text-center">Кузов</div>
-                        <select class="body form-select" aria-label="Кузов">
-                            <option selected>Любой</option>
+                        <div class="text-center">Кузов</div>
+                        <select class="form-select form-control" id="body" name="body">
+                            <option selected value=any>Любой</option>
                             {% for body in bodies %}
-                                <option value="right">{{ body.name }}</option>
+                                <option value={{ body.name }}>{{ body.name }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                        <div class="wheel-drive text-center">Руль</div>
-                        <select class="wheel-drive form-select" aria-label="Руль">
-                            <option selected>Любой</option>
+                        <div class="text-center">Руль</div>
+                        <select class="form-select form-control" id="steering-wheel" name="sw">
+                            <option selected value=any>Любой</option>
                             <option value="left">Левый</option>
                             <option value="right">Правый</option>
                           </select>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                        <div class="condition text-center">Состояние</div>
-                        <select class="condition form-select" aria-label="Состояние">
-                            <option selected>Любое</option>
+                        <div class="text-center">Состояние</div>
+                        <select class="form-select form-control" id="condition" name="condition" >
+                            <option selected value=any>Любое</option>
                             {% for condition in conditions %}
-                                <option value="right">{{ condition.name }}</option>
+                                <option value={{ condition.name }}>{{ condition.name }}</option>
                             {% endfor %}
                           </select>
                     </div>
                     </div>
                     <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                        <div class="price-min text-center">Цена от</div>
-                        <input type="text" class=" price-min form-control" aria-label="price-min input" aria-describedby="inputGroup-sizing-sm">
+                        <div class="text-center">Цена от</div>
+                        <input type="text" class="price-min form-control" id="price-min" name="price-min" aria-describedby="inputGroup-sizing-sm">
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                        <div class="price-max text-center">Цена до</div>
-                        <input type="text" class="price-max form-control" aria-label="price-max input" aria-describedby="inputGroup-sizing-sm">
+                        <div class="text-center">Цена до</div>
+                        <input type="text" class="price-max form-control" id="price-max" name="price-max" aria-describedby="inputGroup-sizing-sm">
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                        <div class="mileage-min text-center">Пробег от</div>
-                        <input type="text" class="mileage-min form-control" aria-label="mileage-min example input" aria-describedby="inputGroup-sizing-sm">
+                        <div class="text-center">Пробег от</div>
+                        <input type="text" class="mileage-min form-control" id="mileage-min" name="mileage-min" aria-describedby="inputGroup-sizing-sm">
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                        <div class="mileage-max text-center">Пробег до</div>
-                        <input type="text" class="mileage-max form-control" aria-label="mileage-max input" aria-describedby="inputGroup-sizing-sm">
+                        <div class="text-center">Пробег до</div>
+                        <input type="text" class="mileage-max form-control" id="mileage-max" name="mileage-max" aria-describedby="inputGroup-sizing-sm">
                     </div>
                     </div>
                 <svg width="100%" height="16"></svg>
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <div class="d-grid">
-                            <button class="btn btn-light" type="button">Применить</button>
+                            <button type="submit" class="btn btn-light">Применить</button>
                           </div>
                     </div>
                 </div>
                 <svg width="100%" height="16"></svg>
             </div>
+        </form>
           </div>
     </div>
 </div>
