@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+
+{% block title %}
+CarFound | Главная
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="filters container">
+        <p>
+            <div class="d-grid">
+            <button class="btn btn-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Показать фильтры
+            </button>
+            </div>
+        </p>
+          <div class="collapse" id="collapseExample">
+            <form class="form-inline" method="GET" action="{{ url_for('index') }}">
+            <div class="container">
+                <div class="row">
+                    <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="text-center">Марка</div>
+                        <select class="form-select form-control" id="brand" name="brand">
+                            <option selected value=any>Все</option>
+                            {% for brand in brands %}
+                                <option value={{ brand.name }}>{{ brand.name }}</option>
+                            {% endfor %}
+                          </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="text-center">Модель</div>
+                        <select class="form-select form-control" id="model" name="model">
+                            <option selected value=any>Все</option>
+                            {% for model_type in model_types %}
+                                <option value={{ model_type.name }}>{{ model_type.name }}</option>
+                            {% endfor %}
+                          </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="transmission text-center">Коробка передач</div>
+                        <select class="form-select form-control" id="transmission" name="transmission">
+                            <option selected value=any>Любая</option>
+                            {% for transmission in transmissions %}
+                                <option value={{ transmission.name }}>{{ transmission.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="city text-center">Город</div>
+                        <select class="form-select form-control" id="city" name="city">
+                            <option selected value=any>Любой</option>
+                            {% for city in cities %}
+                                <option value={{ city.name }}>{{ city.name }}</option>
+                            {% endfor %}
+                          </select>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="volume-min text-center">Обьем двигателя (от)</div>
+                        <select class="form-select form-control" id="volume-min" name="volume-min">
+                            <option selected value=any>Любой</option>
+                            {% for x in volumes %}
+                                <option value={{ x }}>{{ x }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="volume-max text-center">Обьем двигателя (до)</div>
+                        <select class="form-select form-control" id="volume-max" name="volume-max">
+                            <option selected value=any>Любой</option>
+                            {% for x in volumes %}
+                                <option value={{ x }}>{{ x }}</option>
+                            {% endfor %}
+                          </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="text-center">Мощность от</div>
+                        <input type="text" class="power-min form-control" id="power-min" name="power-min" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="text-center">Мощность до</div>
+                        <input type="text" class="power-max form-control" id="power-max" name="power-max" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <div class="text-center">Год выпуска (от)</div>
+                            <select class="form-select form-control" id="year-min" name="year-min">
+                                <option selected value=any>Любой</option>
+                                {% for n in range(1960, 2022) %}
+                                    <option value={{ n }}>{{ n }}</option>
+                                {% endfor %}
+                              </select>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <div class="year-max text-center">Год выпуска (до)</div>
+                            <select class="year-max form-select form-control" id="year-max" name="year-max">
+                                <option selected value=any>Любой</option>
+                                {% for x in range(1960, 2022) %}
+                                    <option value={{ x }}>{{ x }}</option>
+                                {% endfor %}
+                              </select>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <div class="text-center">Кол-во владельцев</div>
+                            <select class="form-select" id="owners" name="owners">
+                                <option selected value=any>Любое</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3 или более</option>
+                              </select>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                            <div class="color text-center">Цвет</div>
+                            <select class="color form-select form-control" id="color" name="color">
+                                <option selected value=any>Любой</option>
+                                {% for color in colors %}
+                                    <option value={{ color.name }}>{{ color.name }}</option>
+                                {% endfor %}
+                              </select>
+                        </div>
+                        </div>
+                    <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="text-center">Привод</div>
+                        <select class="form-select form-control" id="wd" name="wd">
+                            <option selected value=any>Любой</option>
+                            {% for wheels_drive in wheels_drives %}
+                                <option value={{ wheels_drive.name }}>{{ wheels_drive.name }}</option>
+                            {% endfor %}
+                          </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="text-center">Кузов</div>
+                        <select class="form-select form-control" id="body" name="body">
+                            <option selected value=any>Любой</option>
+                            {% for body in bodies %}
+                                <option value={{ body.name }}>{{ body.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="text-center">Руль</div>
+                        <select class="form-select form-control" id="steering-wheel" name="sw">
+                            <option selected value=any>Любой</option>
+                            <option value="left">Левый</option>
+                            <option value="right">Правый</option>
+                          </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="text-center">Состояние</div>
+                        <select class="form-select form-control" id="condition" name="condition" >
+                            <option selected value=any>Любое</option>
+                            {% for condition in conditions %}
+                                <option value={{ condition.name }}>{{ condition.name }}</option>
+                            {% endfor %}
+                          </select>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="text-center">Цена от</div>
+                        <input type="text" class="price-min form-control" id="price-min" name="price-min" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="text-center">Цена до</div>
+                        <input type="text" class="price-max form-control" id="price-max" name="price-max" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="text-center">Пробег от</div>
+                        <input type="text" class="mileage-min form-control" id="mileage-min" name="mileage-min" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="text-center">Пробег до</div>
+                        <input type="text" class="mileage-max form-control" id="mileage-max" name="mileage-max" aria-describedby="inputGroup-sizing-sm">
+                    </div>
+                    </div>
+                <svg width="100%" height="16"></svg>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-light">Применить</button>
+                          </div>
+                    </div>
+                </div>
+                <svg width="100%" height="16"></svg>
+            </div>
+        </form>
+          </div>
+    </div>
+</div>
+</div>
+    
+    <div class="listings mx-auto">
+        <div class="row mx-auto">
+            {% for advert in pages.items %}
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col xl-4 col-xxl-4 mx-auto">
+                        <div class="card mb-3 h-90 mx-auto"style="min-width: 15rem; max-width: 26rem">
+                            <img src="{{ advert.image_url }}" class="card-img-top" style="width: 100%; height: 400px; object-fit: cover;" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">{{ advert.model.brand.name }} {{ advert.model.name }}, {{ advert.year }} год</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item text-center">г. {{ advert.city.name }}, цена: {{ advert.price }} рублей</li>
+                                    <li class="list-group-item text-center">Двигатель: {{ advert.engine_volume }}, {{ advert.horse_power }} л.с, {{ advert.fuel_type.name }}</li>
+                                    <li class="list-group-item text-center">Пробег: {{ advert.mileage }} км, коробка: {{ advert.transmission.name }}</li>
+                                    <li class="list-group-item text-center">Привод: {{ advert.wheels_drive.name }}, руль: {{ 'Левый' if advert.is_left_hand_drive else 'Правый' }}</li>
+                                    <li class="list-group-item text-center">{{ advert.body.name }}, цвет: {{ advert.color.name }}</li>
+                                    <li class="list-group-item text-center">{{ advert.condition.name }}, владельцев: {{ advert.owners }}</li>
+                                    <li class="list-group-item text-center">Опубликовано {{ advert.date.strftime('%m/%d/%Y в %H:%M') }}</li>
+                                </ul>
+                                <div class="card-body d-grid">
+                                    <a href="{{ advert.url }}" class="btn btn-primary" role="button">Перейти на обьявление</a>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+              <li {% if not pages.has_prev %} class="page-item disabled" {% endif %}>
+                <a class="page-link" href="./?page={{ pages.prev_num }}" tabindex="-1" aria-disabled="true">Previous</a>
+              </li>
+                {% for page in pages.iter_pages() %}
+                    <li {% if page == pages.page %} class="page-item active" {% endif %}>
+                        <a class="page-link" href="./?page={{page}}">{{ page }}</a>
+                    </li>
+                {% endfor %}
+              <li {% if not pages.has_next %} class="page-item disabled" {% endif %}>
+                <a class="page-link" href="./?page={{ pages.next_num }}" tabindex="-1" aria-disabled="true">Next</a>
+              </li>
+            </ul>
+          </nav>
+    
+{% endblock %}
